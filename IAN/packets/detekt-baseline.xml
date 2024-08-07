@@ -5,21 +5,6 @@
     <ID>CyclomaticComplexMethod:PacketReader.kt$PacketReader$@Throws(PacketException::class) suspend fun readPacket(): ParseResult</ID>
     <ID>LongMethod:PacketReader.kt$PacketReader$@Throws(PacketException::class) suspend fun readPacket(): ParseResult</ID>
     <ID>LoopWithTooManyJumpStatements:PacketReader.kt$PacketReader$while</ID>
-    <ID>MagicNumber:UnobservedObjectParser.kt$UnobservedObjectParser.Anomaly$4</ID>
-    <ID>MagicNumber:UnobservedObjectParser.kt$UnobservedObjectParser.Anomaly$6</ID>
-    <ID>MagicNumber:UnobservedObjectParser.kt$UnobservedObjectParser.Asteroid$3</ID>
-    <ID>MagicNumber:UnobservedObjectParser.kt$UnobservedObjectParser.Asteroid$4</ID>
-    <ID>MagicNumber:UnobservedObjectParser.kt$UnobservedObjectParser.Drone$4</ID>
-    <ID>MagicNumber:UnobservedObjectParser.kt$UnobservedObjectParser.Drone$9</ID>
-    <ID>MagicNumber:UnobservedObjectParser.kt$UnobservedObjectParser.Engineering$4</ID>
-    <ID>MagicNumber:UnobservedObjectParser.kt$UnobservedObjectParser.GenericMesh$12</ID>
-    <ID>MagicNumber:UnobservedObjectParser.kt$UnobservedObjectParser.GenericMesh$3</ID>
-    <ID>MagicNumber:UnobservedObjectParser.kt$UnobservedObjectParser.GenericMesh$4</ID>
-    <ID>MagicNumber:UnobservedObjectParser.kt$UnobservedObjectParser.GenericMesh$6</ID>
-    <ID>MagicNumber:UnobservedObjectParser.kt$UnobservedObjectParser.Nebula$4</ID>
-    <ID>MagicNumber:UnobservedObjectParser.kt$UnobservedObjectParser.Nebula$6</ID>
-    <ID>MagicNumber:UnobservedObjectParser.kt$UnobservedObjectParser.Torpedo$4</ID>
-    <ID>MagicNumber:UnobservedObjectParser.kt$UnobservedObjectParser.Torpedo$8</ID>
     <ID>NestedBlockDepth:PacketReader.kt$PacketReader$@Throws(PacketException::class) suspend fun readPacket(): ParseResult</ID>
     <ID>ReturnCount:PacketReader.kt$PacketReader$@Throws(PacketException::class) suspend fun readPacket(): ParseResult</ID>
     <ID>ThrowsCount:PacketReader.kt$PacketReader$@Throws(PacketException::class) suspend fun readPacket(): ParseResult</ID>
