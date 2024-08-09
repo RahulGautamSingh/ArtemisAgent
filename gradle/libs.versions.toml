@@ -188,6 +188,7 @@ ian-test-runtime = [
 ]
 
 ian-enums-test = [
+    "kotest-assertions-api",
     "kotest-assertions-core",
     "kotest-assertions-shared",
     "kotest-common",
@@ -294,6 +295,17 @@ ian-vesseldata-test = [
     "kotest-framework-api",
     "kotest-framework-engine",
     "kotest-property",
+    "mockk",
+]
+ian-vesseldata-test-fixtures = [
+    "kotest-assertions-api",
+    "kotest-assertions-core",
+    "kotest-assertions-shared",
+    "kotest-common",
+    "kotest-framework-api",
+    "kotest-framework-engine",
+    "kotest-property",
+    "korlibs-xml",
     "mockk",
 ]
 

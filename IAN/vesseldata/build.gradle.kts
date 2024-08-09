@@ -44,7 +44,7 @@ dependencies {
   implementation(libs.bundles.ian.vesseldata)
 
   testFixturesImplementation(project(":IAN:enums"))
-  testFixturesImplementation(libs.bundles.ian.vesseldata.test)
+  testFixturesImplementation(libs.bundles.ian.vesseldata.test.fixtures)
   testFixturesApi(libs.kotest.framework.datatest.jvm)
 
   testImplementation(libs.bundles.ian.vesseldata.test)

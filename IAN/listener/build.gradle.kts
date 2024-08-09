@@ -41,7 +41,9 @@ dependencies {
     api(libs.kotlinx.coroutines)
 
     implementation(libs.kotlin.reflect)
+
     testImplementation(libs.bundles.ian.listener.test)
+    testFixturesImplementation(libs.kotlin.reflect)
     testRuntimeOnly(libs.bundles.ian.test.runtime)
 }
 
