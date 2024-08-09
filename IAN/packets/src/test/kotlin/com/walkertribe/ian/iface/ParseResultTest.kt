@@ -42,7 +42,7 @@ class ParseResultTest : DescribeSpec({
                         expectedPayload,
                     )
 
-                    val packet = result.packet.shouldBeInstanceOf<Packet.Raw.Unparsed>()
+                    val packet = result.packet.shouldBeInstanceOf<Packet.Raw>()
                     packet.type shouldBeEqual expectedPacketType
                     packet.payload.toList() shouldContainExactly expectedPayload.toList()
 
@@ -82,7 +82,7 @@ class ParseResultTest : DescribeSpec({
                     val expectedPacketType = unparsed.type
                     val expectedPayload = unparsed.payload
 
-                    val packet = result.packet.shouldBeInstanceOf<Packet.Raw.Unknown>()
+                    val packet = result.packet.shouldBeInstanceOf<Packet.Raw>()
                     packet.type shouldBeEqual expectedPacketType
                     packet.payload.toList() shouldContainExactly expectedPayload.toList()
                 }

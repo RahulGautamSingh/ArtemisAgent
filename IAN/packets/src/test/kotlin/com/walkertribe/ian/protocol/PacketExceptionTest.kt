@@ -78,8 +78,7 @@ class PacketExceptionTest : DescribeSpec({
         describe("Unknown packet") {
             it("Can create") {
                 exceptionDetails.forEach { (ex, packetType, payload) ->
-                    val packet = ex.toUnknownPacket()
-                    packet.shouldBeInstanceOf<Packet.Raw.Unknown>()
+                    val packet = ex.toUnknownPacket().shouldBeInstanceOf<Packet.Raw>()
                     packet.type shouldBeEqual packetType
                     packet.payload.toList() shouldContainExactly payload.toList()
                 }

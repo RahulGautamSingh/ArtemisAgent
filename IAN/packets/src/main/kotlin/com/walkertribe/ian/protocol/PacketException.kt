@@ -68,7 +68,7 @@ class PacketException private constructor(
      * Convert the data in this exception to an UnknownPacket. An
      * [IllegalStateException] will occur if the payload is null.
      */
-    fun toUnknownPacket(): Packet.Raw.Unknown = Packet.Raw.Unknown(
+    fun toUnknownPacket(): Packet.Raw = Packet.Raw(
         packetType,
         checkNotNull(payload) { "Unknown payload" }
     )

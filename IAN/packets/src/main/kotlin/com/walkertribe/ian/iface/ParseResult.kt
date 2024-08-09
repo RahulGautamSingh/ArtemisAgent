@@ -10,7 +10,7 @@ import com.walkertribe.ian.protocol.core.world.ObjectUpdatePacket
  */
 sealed class ParseResult {
     internal class Processing(type: Int, payload: ByteArray) : ParseResult() {
-        override val packet: Packet by lazy { Packet.Raw.Unparsed(type, payload) }
+        override val packet: Packet by lazy { Packet.Raw(type, payload) }
     }
 
     class Success(override val packet: Packet.Server, prevResult: ParseResult) : ParseResult() {
