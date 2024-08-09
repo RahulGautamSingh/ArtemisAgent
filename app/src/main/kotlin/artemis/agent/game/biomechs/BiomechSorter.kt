@@ -24,7 +24,7 @@ data class BiomechSorter(
             it.biomech.hullId.value
         }
 
-        val STATUS_COMPARATOR: Comparator<BiomechEntry> = compareByDescending { it }
+        val STATUS_COMPARATOR: Comparator<BiomechEntry> = reverseOrder()
 
         val NAME_COMPARATOR: Comparator<BiomechEntry> = compareBy { it.biomech.name.value ?: "" }
     }
