@@ -224,17 +224,4 @@ class ProtocolTest : DescribeSpec(), KoinTest {
             }
         }
     }
-
-    data class ServerPacketRegistration(
-        val packetClass: KClass<out Packet>,
-        val packetName: String = packetClass.java.simpleName,
-        val type: Int,
-        val subtype: Byte? = null,
-    )
-
-    data class ClientPacketTestCase(
-        val packetName: String,
-        val subtype: Byte? = null,
-        val type: Int = TestPacketTypes.VALUE_INT,
-    )
 }
