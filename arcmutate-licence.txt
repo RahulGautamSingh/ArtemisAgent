@@ -1,0 +1,7 @@
+#Licence file for pitest extensions
+#Fri Aug 09 15:04:07 BST 2024
+expires=09/08/2025
+keyVersion=1
+packages=com.walkertribe.ian.*
+signature=Fc6UqbFDel2MWr03I9M0faVYpOqKpDuJOeSKLeJTsW+t1eLiZVpdXu0M/uD3kxDIv8l1qH9oxFKux1/VjSQN8MbB5BFT0TZ+X/S9ot59zZXpFgaa3/aO625T3IhxN5iz/wOFn1vRIIp/RLzQUqPBOZI/q3ZJv0eKBuKsKTxUA/c\=
+type=OSSS

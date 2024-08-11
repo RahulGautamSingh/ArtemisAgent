@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.tasks.factory.dependsOn
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -40,6 +39,7 @@ dependencies {
   testImplementation(libs.bundles.ian.util.test)
   testFixturesImplementation(libs.bundles.ian.util.test.fixtures)
   testRuntimeOnly(libs.bundles.ian.test.runtime)
+  pitest(libs.bundles.arcmutate)
 }
 
 kover {
@@ -51,6 +51,7 @@ kover {
 }
 
 val pitestMutators: Set<String> by rootProject.extra
+val pitestTimeoutFactor: BigDecimal by rootProject.extra
 
 pitest {
   pitestVersion = libs.versions.pitest.asProvider()
@@ -58,6 +59,7 @@ pitest {
   verbose = true
   targetClasses = listOf("com.walkertribe.ian.util.*")
   threads = 2
+  timeoutFactor = pitestTimeoutFactor
   outputFormats = listOf("HTML", "CSV")
   timestampedReports = false
   setWithHistory(true)

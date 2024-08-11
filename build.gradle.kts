@@ -12,9 +12,12 @@ val sdkVersion: Int by extra(34)
 val minimumSdkVersion: Int by extra(21)
 val javaVersion: JavaVersion by extra(JavaVersion.VERSION_17)
 
+val pitestTimeoutFactor: BigDecimal by extra(BigDecimal(100))
 val pitestMutators: Set<String> by extra(
     setOf(
         "STRONGER",
+        "EXTENDED",
+        "EXTREME",
         "INLINE_CONSTS",
         "REMOVE_CONDITIONALS",
         "REMOVE_INCREMENTS",

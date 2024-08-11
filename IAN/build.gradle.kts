@@ -72,9 +72,12 @@ dependencies {
     testImplementation(testFixtures(project(":IAN:util")))
     testImplementation(libs.bundles.ian.test)
     testRuntimeOnly(libs.bundles.ian.test.runtime)
+
+    pitest(libs.bundles.arcmutate)
 }
 
 val pitestMutators: Set<String> by rootProject.extra
+val pitestTimeoutFactor: BigDecimal by rootProject.extra
 
 pitest {
     pitestVersion = libs.versions.pitest.asProvider()
@@ -82,6 +85,7 @@ pitest {
     verbose = true
     targetClasses = listOf("com.walkertribe.ian.*")
     threads = 2
+    timeoutFactor = pitestTimeoutFactor
     outputFormats = listOf("HTML", "CSV")
     timestampedReports = false
     setWithHistory(true)

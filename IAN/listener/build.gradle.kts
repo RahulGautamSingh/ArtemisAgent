@@ -45,6 +45,8 @@ dependencies {
     testImplementation(libs.bundles.ian.listener.test)
     testFixturesImplementation(libs.kotlin.reflect)
     testRuntimeOnly(libs.bundles.ian.test.runtime)
+
+    pitest(libs.bundles.arcmutate)
 }
 
 kover {
@@ -56,6 +58,7 @@ kover {
 }
 
 val pitestMutators: Set<String> by rootProject.extra
+val pitestTimeoutFactor: BigDecimal by rootProject.extra
 
 pitest {
     pitestVersion = libs.versions.pitest.asProvider()
@@ -63,6 +66,7 @@ pitest {
     verbose = true
     targetClasses = listOf("com.walkertribe.ian.iface.*")
     threads = 2
+    timeoutFactor = pitestTimeoutFactor
     outputFormats = listOf("HTML", "CSV")
     timestampedReports = false
     setWithHistory(true)

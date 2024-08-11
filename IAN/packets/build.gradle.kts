@@ -72,6 +72,8 @@ dependencies {
     testFixturesImplementation(libs.bundles.ian.packets.test.fixtures)
     testImplementation(libs.bundles.ian.packets.test)
     testRuntimeOnly(libs.bundles.ian.test.runtime)
+
+    pitest(libs.bundles.arcmutate)
 }
 
 kover {
@@ -83,15 +85,18 @@ kover {
 }
 
 val pitestMutators: Set<String> by rootProject.extra
+val pitestTimeoutFactor: BigDecimal by rootProject.extra
 
 pitest {
     pitestVersion = libs.versions.pitest.asProvider()
     junit5PluginVersion = libs.versions.pitest.junit5
     verbose = true
     targetClasses = listOf("com.walkertribe.ian.protocol.*")
-    threads = 2
+    threads = 8
+    timeoutFactor = pitestTimeoutFactor
     outputFormats = listOf("HTML", "CSV")
     timestampedReports = false
     setWithHistory(true)
     mutators.addAll(pitestMutators)
+    jvmArgs = listOf("-Xmx8g", "-Xms1g", "-XX:+HeapDumpOnOutOfMemoryError", "-XX:+UseParallelGC")
 }
