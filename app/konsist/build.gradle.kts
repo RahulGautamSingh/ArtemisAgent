@@ -40,10 +40,6 @@ android {
     tasks.withType<Test>().configureEach {
         useJUnitPlatform()
     }
-
-    tasks.whenTaskAdded {
-        enabled = !name.contains("AndroidTest")
-    }
 }
 
 dependencies {
