@@ -43,6 +43,7 @@ jobs:
 
   dependency-review:
     runs-on: ubuntu-latest
+    needs: dependency-submission
     steps:
       - name: 'Checkout repository'
         uses: actions/checkout@v4
