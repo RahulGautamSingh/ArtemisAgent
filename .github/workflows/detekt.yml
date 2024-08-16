@@ -40,8 +40,9 @@ jobs:
 
     # Sets up the detekt cli
     - name: Setup Detekt
-      run: |
-        brew install detekt
+      uses: ConorMacBride/install-package@v1.1.0
+      with:
+        brew: detekt
 
     # Performs static analysis using Detekt
     - name: Run Detekt
