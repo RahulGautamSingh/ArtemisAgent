@@ -47,12 +47,6 @@
     <ID>LongParameterList:MainActivity.kt$MainActivity$( channelId: String, title: String, message: String, ongoing: Boolean = false, onIntent: Intent.() -&gt; Unit = { }, setBuilder: (NotificationCompat.Builder) -&gt; Unit = { } )</ID>
     <ID>LongParameterList:RoutingGraph.kt$RoutingGraph$( sourceX: Float, sourceZ: Float, destX: Float, destZ: Float, simpleDistance: Float, maxCost: Float = Float.POSITIVE_INFINITY )</ID>
     <ID>LoopWithTooManyJumpStatements:RoutingGraph.kt$RoutingGraph$while</ID>
-    <ID>MagicNumber:AgentViewModel.kt$AgentViewModel$3</ID>
-    <ID>MagicNumber:HelpFragment.kt$HelpFragment$3</ID>
-    <ID>MagicNumber:HelpFragment.kt$HelpFragment$5</ID>
-    <ID>MagicNumber:HelpFragment.kt$HelpFragment$7</ID>
-    <ID>MagicNumber:RouteObjective.kt$RouteObjective.ReplacementFighters$4</ID>
-    <ID>MagicNumber:RouteObjective.kt$RouteObjective.ReplacementFighters$6</ID>
     <ID>NestedBlockDepth:AgentViewModel.kt$AgentViewModel$private suspend fun updateObjects()</ID>
     <ID>NestedBlockDepth:CPU.kt$CPU$@Listener fun onPlayerUpdate(update: ArtemisPlayer)</ID>
     <ID>NestedBlockDepth:CPU.kt$CPU$private fun onNpcCreate(npc: ArtemisNpc): Boolean</ID>
@@ -75,11 +69,5 @@
     <ID>TooManyFunctions:AgentViewModel.kt$AgentViewModel : AndroidViewModelListener</ID>
     <ID>TooManyFunctions:CPU.kt$CPU : CoroutineScope</ID>
     <ID>TooManyFunctions:ObjectEntry.kt$ObjectEntry$Station : ObjectEntry</ID>
-    <ID>UnusedParameter:AgentViewModel.kt$AgentViewModel$event: ConnectionEvent.HeartbeatLost</ID>
-    <ID>UnusedParameter:AgentViewModel.kt$AgentViewModel$event: ConnectionEvent.HeartbeatRegained</ID>
-    <ID>UnusedParameter:AgentViewModel.kt$AgentViewModel$event: ConnectionEvent.Success</ID>
-    <ID>UnusedParameter:AgentViewModel.kt$AgentViewModel$packet: EndGamePacket</ID>
-    <ID>UnusedParameter:AgentViewModel.kt$AgentViewModel$packet: JumpEndPacket</ID>
-    <ID>UnusedPrivateProperty:ConnectFragment.kt$ConnectFragment$val prevUrl = viewModel.connectedUrl.value</ID>
   </CurrentIssues>
 </SmellBaseline>

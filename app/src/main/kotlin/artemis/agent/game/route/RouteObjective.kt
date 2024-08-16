@@ -25,7 +25,9 @@ sealed interface RouteObjective {
             return "$totalFighters/${maxFighters + extraShuttle}"
         }
 
+        @Suppress("MagicNumber")
         val REPORT_VERSION = Version(2, 4, 0)
+        @Suppress("MagicNumber")
         val SHUTTLE_VERSION = Version(2, 6, 0)
     }
 

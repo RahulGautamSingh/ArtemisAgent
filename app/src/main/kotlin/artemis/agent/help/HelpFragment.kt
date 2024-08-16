@@ -35,8 +35,10 @@ class HelpFragment : Fragment(R.layout.help_fragment) {
                     getStringArray(R.array.help_contents_getting_started).map {
                         HelpTopicContent.Text(it)
                     }.toMutableList<HelpTopicContent>().apply {
-                        add(3, HelpTopicContent.Image(R.drawable.connect_preview))
-                        add(5, HelpTopicContent.Image(R.drawable.ship_entry_preview))
+                        addImages(
+                            INDEX_PREVIEW_CONNECT to R.drawable.connect_preview,
+                            INDEX_PREVIEW_SHIP to R.drawable.ship_entry_preview,
+                        )
                     },
                 ),
                 HelpTopic(
@@ -44,7 +46,7 @@ class HelpFragment : Fragment(R.layout.help_fragment) {
                     getStringArray(R.array.help_contents_basics).map {
                         HelpTopicContent.Text(it)
                     }.toMutableList<HelpTopicContent>().apply {
-                        add(1, HelpTopicContent.Image(R.drawable.game_header_preview))
+                        addImages(1 to R.drawable.game_header_preview)
                     },
                 ),
                 HelpTopic(
@@ -52,7 +54,7 @@ class HelpFragment : Fragment(R.layout.help_fragment) {
                     getStringArray(R.array.help_contents_stations).map {
                         HelpTopicContent.Text(it)
                     }.toMutableList<HelpTopicContent>().apply {
-                        add(1, HelpTopicContent.Image(R.drawable.station_entry_preview))
+                        addImages(1 to R.drawable.station_entry_preview)
                     },
                 ),
                 HelpTopic(
@@ -60,7 +62,7 @@ class HelpFragment : Fragment(R.layout.help_fragment) {
                     getStringArray(R.array.help_contents_allies).map {
                         HelpTopicContent.Text(it)
                     }.toMutableList<HelpTopicContent>().apply {
-                        add(1, HelpTopicContent.Image(R.drawable.ally_entry_preview))
+                        addImages(1 to R.drawable.ally_entry_preview)
                     },
                 ),
                 HelpTopic(
@@ -68,8 +70,10 @@ class HelpFragment : Fragment(R.layout.help_fragment) {
                     getStringArray(R.array.help_contents_missions).map {
                         HelpTopicContent.Text(it)
                     }.toMutableList<HelpTopicContent>().apply {
-                        add(1, HelpTopicContent.Image(R.drawable.comms_message))
-                        add(7, HelpTopicContent.Image(R.drawable.mission_entry_preview))
+                        addImages(
+                            INDEX_PREVIEW_COMMS_MESSAGE to R.drawable.comms_message,
+                            INDEX_PREVIEW_MISSION to R.drawable.mission_entry_preview,
+                        )
                     },
                 ),
                 HelpTopic(
@@ -77,8 +81,10 @@ class HelpFragment : Fragment(R.layout.help_fragment) {
                     getStringArray(R.array.help_contents_routing).map {
                         HelpTopicContent.Text(it)
                     }.toMutableList<HelpTopicContent>().apply {
-                        add(1, HelpTopicContent.Image(R.drawable.route_tasks_preview))
-                        add(3, HelpTopicContent.Image(R.drawable.route_supplies_preview))
+                        addImages(
+                            INDEX_PREVIEW_ROUTE_TASKS to R.drawable.route_tasks_preview,
+                            INDEX_PREVIEW_ROUTE_SUPPLIES to R.drawable.route_supplies_preview,
+                        )
                     }
                 ),
                 HelpTopic(
@@ -86,8 +92,10 @@ class HelpFragment : Fragment(R.layout.help_fragment) {
                     getStringArray(R.array.help_contents_enemies).map {
                         HelpTopicContent.Text(it)
                     }.toMutableList<HelpTopicContent>().apply {
-                        add(1, HelpTopicContent.Image(R.drawable.enemy_entry_preview))
-                        add(3, HelpTopicContent.Image(R.drawable.enemy_intel_preview))
+                        addImages(
+                            INDEX_PREVIEW_ENEMY to R.drawable.enemy_entry_preview,
+                            INDEX_PREVIEW_INTEL to R.drawable.enemy_intel_preview,
+                        )
                     },
                 ),
                 HelpTopic(
@@ -95,7 +103,7 @@ class HelpFragment : Fragment(R.layout.help_fragment) {
                     getStringArray(R.array.help_contents_biomechs).map {
                         HelpTopicContent.Text(it)
                     }.toMutableList<HelpTopicContent>().apply {
-                        add(1, HelpTopicContent.Image(R.drawable.biomech_entry_preview))
+                        addImages(1 to R.drawable.biomech_entry_preview)
                     },
                 ),
                 HelpTopic(
@@ -247,5 +255,21 @@ class HelpFragment : Fragment(R.layout.help_fragment) {
         const val MENU = -1
         const val IMAGE = 0
         const val TEXT = 1
+
+        private const val INDEX_PREVIEW_CONNECT = 3
+        private const val INDEX_PREVIEW_SHIP = 5
+
+        private const val INDEX_PREVIEW_COMMS_MESSAGE = 1
+        private const val INDEX_PREVIEW_MISSION = 7
+
+        private const val INDEX_PREVIEW_ROUTE_TASKS = 1
+        private const val INDEX_PREVIEW_ROUTE_SUPPLIES = 3
+
+        private const val INDEX_PREVIEW_ENEMY = 1
+        private const val INDEX_PREVIEW_INTEL = 3
+
+        private fun MutableList<HelpTopicContent>.addImages(vararg entries: Pair<Int, Int>) {
+            entries.forEach { (index, entry) -> add(index, HelpTopicContent.Image(entry)) }
+        }
     }
 }

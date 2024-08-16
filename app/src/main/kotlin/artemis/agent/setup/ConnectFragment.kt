@@ -102,12 +102,9 @@ class ConnectFragment : Fragment(R.layout.connect_fragment) {
             binding.connectSpinner.visibility = it.spinnerVisibility
 
             if (!viewModel.attemptingConnection && it is ConnectionStatus.Connecting) {
-                val prevUrl = viewModel.connectedUrl.value
-
                 addressBar.clearFocus()
 
                 val url = addressBar.text.toString()
-
                 viewModel.tryConnect(url)
             }
         }

@@ -409,7 +409,7 @@ class AgentViewModel(application: Application) :
     private var updateJob: Job? = null
 
     // Determines whether directions are shown as padded three-digit numbers
-    var threeDigitDirections = true
+    private var threeDigitDirections = true
 
     // Page flash variables
     var missionUpdate: Boolean = false
@@ -589,7 +589,7 @@ class AgentViewModel(application: Application) :
     }
 
     fun formattedHeading(heading: Int): String =
-        heading.toString().padStart(if (threeDigitDirections) 3 else 0, '0')
+        heading.toString().padStart(if (threeDigitDirections) PADDED_ZEROES else 0, '0')
 
     /**
      * Calculates the heading from the player ship to the given object and formats it as a string.
@@ -1242,7 +1242,7 @@ class AgentViewModel(application: Application) :
     }
 
     @Listener
-    fun onConnect(event: ConnectionEvent.Success) {
+    fun onConnect(@Suppress("UNUSED_PARAMETER") event: ConnectionEvent.Success) {
         connectionStatus.value = ConnectionStatus.Connected
         playSound(SoundEffect.CONNECTED)
 
@@ -1263,13 +1263,13 @@ class AgentViewModel(application: Application) :
     }
 
     @Listener
-    fun onHeartbeatLost(event: ConnectionEvent.HeartbeatLost) {
+    fun onHeartbeatLost(@Suppress("UNUSED_PARAMETER") event: ConnectionEvent.HeartbeatLost) {
         connectionStatus.value = ConnectionStatus.HeartbeatLost
         playSound(SoundEffect.HEARTBEAT_LOST)
     }
 
     @Listener
-    fun onHeartbeatRegained(event: ConnectionEvent.HeartbeatRegained) {
+    fun onHeartbeatRegained(@Suppress("UNUSED_PARAMETER") event: ConnectionEvent.HeartbeatRegained) {
         connectionStatus.value = ConnectionStatus.Connected
         playSound(SoundEffect.BEEP_2)
     }
@@ -1363,7 +1363,7 @@ class AgentViewModel(application: Application) :
     }
 
     @Listener
-    fun onPacket(packet: EndGamePacket) {
+    fun onPacket(@Suppress("UNUSED_PARAMETER") packet: EndGamePacket) {
         endGame()
     }
 
@@ -1374,7 +1374,7 @@ class AgentViewModel(application: Application) :
     }
 
     @Listener
-    fun onPacket(packet: JumpEndPacket) {
+    fun onPacket(@Suppress("UNUSED_PARAMETER") packet: JumpEndPacket) {
         viewModelScope.launch {
             jumping.value = true
             delay(JUMP_DURATION)
@@ -1621,6 +1621,7 @@ class AgentViewModel(application: Application) :
         private const val JUMP_DURATION = 3000L
         const val FULL_HEADING_RANGE = 360
         const val VOLUME_SCALE = 100f
+        private const val PADDED_ZEROES = 3
 
         private val STATION_CALLSIGN = Regex("DS\\d+")
         private val ENEMY_STATION = Regex("^[A-Z][a-z]+ Base \\d+")
