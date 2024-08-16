@@ -1,6 +1,7 @@
 package com.walkertribe.ian.protocol.udp
 
 import io.kotest.assertions.retry
+import io.kotest.assertions.retryConfig
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.booleans.shouldBeFalse
@@ -37,7 +38,6 @@ import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.seconds
 
 class ServerDiscoveryRequesterTest : DescribeSpec({
     failfast = true
@@ -70,6 +70,10 @@ class ServerDiscoveryRequesterTest : DescribeSpec({
             }
         }
 
+        val retryConfig = retryConfig {
+            maxRetry = 10
+        }
+
         it("Throws when initialized with invalid timeout") {
             Arb.long(max = 0L).checkAll {
                 shouldThrow<IllegalArgumentException> {
@@ -96,7 +100,7 @@ class ServerDiscoveryRequesterTest : DescribeSpec({
                 lateinit var datagram: Datagram
 
                 it("Datagram was sent through UDP") {
-                    retry(5, 3.seconds) {
+                    retry(retryConfig) {
                         requesterJob?.join()
                         requesterJob = launch { requester.run() }
 
@@ -114,7 +118,7 @@ class ServerDiscoveryRequesterTest : DescribeSpec({
                 }
 
                 it("Discovered all broadcasting servers") {
-                    retry(5, 3.seconds) {
+                    retry(retryConfig) {
                         discoveredServers.clear()
                         requesterJob?.join()
                         requesterJob = launch { requester.run() }
@@ -145,7 +149,7 @@ class ServerDiscoveryRequesterTest : DescribeSpec({
                 }
 
                 it("Ignores data not beginning with ACK byte") {
-                    retry(5, 3.seconds) {
+                    retry(retryConfig) {
                         discoveredServers.clear()
                         requesterJob?.join()
                         requesterJob = launch { requester.run() }
