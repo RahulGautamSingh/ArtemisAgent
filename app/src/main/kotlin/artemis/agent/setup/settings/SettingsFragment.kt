@@ -245,7 +245,7 @@ class SettingsFragment : Fragment(R.layout.settings_fragment) {
     }
 
     private fun goBackToMenu() {
-        viewModel.playSound(SoundEffect.BEEP_2)
+        viewModel.playSound(SoundEffect.BEEP_1)
         viewModel.settingsPage.value = null
     }
 }

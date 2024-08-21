@@ -126,8 +126,7 @@ class HelpFragment : Fragment(R.layout.help_fragment) {
         val onBackPressedCallback = requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner
         ) {
-            viewModel.playSound(SoundEffect.BEEP_2)
-            viewModel.helpTopicIndex.value = MENU
+            onBack()
         }
 
         val helpTopicContent = binding.helpTopicContent
@@ -160,14 +159,16 @@ class HelpFragment : Fragment(R.layout.help_fragment) {
             adapter.notifyDataSetChanged()
         }
 
-        binding.backButton.setOnClickListener {
-            viewModel.playSound(SoundEffect.BEEP_1)
-            viewModel.helpTopicIndex.value = MENU
-        }
+        binding.backButton.setOnClickListener { onBack() }
 
         helpTopicContent.itemAnimator = null
         helpTopicContent.adapter = adapter
         helpTopicContent.layoutManager = layoutManager
+    }
+
+    private fun onBack() {
+        viewModel.playSound(SoundEffect.BEEP_1)
+        viewModel.helpTopicIndex.value = MENU
     }
 
     private interface ViewProvider {
