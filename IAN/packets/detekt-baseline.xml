@@ -8,7 +8,6 @@
     <ID>NestedBlockDepth:PacketReader.kt$PacketReader$@Throws(PacketException::class) suspend fun readPacket(): ParseResult</ID>
     <ID>ReturnCount:PacketReader.kt$PacketReader$@Throws(PacketException::class) suspend fun readPacket(): ParseResult</ID>
     <ID>ThrowsCount:PacketReader.kt$PacketReader$@Throws(PacketException::class) suspend fun readPacket(): ParseResult</ID>
-    <ID>TooGenericExceptionCaught:PacketReader.kt$PacketReader$ex: Exception</ID>
     <ID>TooManyFunctions:PacketReader.kt$PacketReader : KoinComponent</ID>
   </CurrentIssues>
 </SmellBaseline>

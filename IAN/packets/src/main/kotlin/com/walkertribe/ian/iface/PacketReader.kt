@@ -170,7 +170,7 @@ class PacketReader(
                     // an exception occurred during payload parsing
                     ex.appendParsingDetails(packetType, payloadBytes)
                     return ParseResult.Fail(ex)
-                } catch (ex: Exception) {
+                } catch (@Suppress("TooGenericExceptionCaught") ex: Exception) {
                     return ParseResult.Fail(PacketException(ex, packetType, payloadBytes))
                 } finally {
                     payload.close()
