@@ -36,6 +36,8 @@ import artemis.agent.game.stations.StationsFragment
 import artemis.agent.help.HelpFragment
 import artemis.agent.setup.ConnectFragment
 import artemis.agent.setup.SetupFragment
+import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.walkertribe.ian.iface.DisconnectCause
 import com.walkertribe.ian.protocol.core.comm.CommsIncomingPacket
 import com.walkertribe.ian.util.Version
@@ -78,6 +80,9 @@ class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
+
+    private val reviewManager: ReviewManager by lazy { ReviewManagerFactory.create(this) }
+    private var shouldAskForReview: Boolean = false
 
     private var notificationRequests = STOP_NOTIFICATIONS
 
@@ -581,6 +586,11 @@ class MainActivity : AppCompatActivity() {
                     }.show()
             }
 
+            collectLatestWhileStarted(gameOverReason) {
+                if (shouldAskForReview) askForReview()
+                shouldAskForReview = !shouldAskForReview
+            }
+
             with(binding) {
                 collectLatestWhileStarted(isThemeChanged) {
                     if (it) {
@@ -710,6 +720,39 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         }
+    }
+
+    private fun askForReview() {
+        AlertDialog.Builder(this@MainActivity)
+            .setTitle(R.string.review_title)
+            .setMessage(R.string.review_prompt)
+            .setCancelable(true)
+            .setNegativeButton(R.string.no) { _, _ ->
+                viewModel.playSound(SoundEffect.BEEP_1)
+            }
+            .setPositiveButton(R.string.yes) { _, _ ->
+                viewModel.playSound(SoundEffect.BEEP_2)
+
+                val request = reviewManager.requestReviewFlow()
+                request.addOnSuccessListener { reviewInfo ->
+                    reviewManager.launchReviewFlow(this, reviewInfo)
+                        .addOnFailureListener {
+                            showReviewErrorDialog(it)
+                        }
+                }.addOnFailureListener {
+                    showReviewErrorDialog(it)
+                }
+            }
+            .show()
+    }
+
+    private fun showReviewErrorDialog(exception: Exception) {
+        val errorCode = exception.message ?: getString(R.string.unknown)
+        AlertDialog.Builder(this@MainActivity)
+            .setTitle(R.string.review_error)
+            .setMessage(getString(R.string.review_error_message, errorCode))
+            .setCancelable(true)
+            .show()
     }
 
     private companion object {

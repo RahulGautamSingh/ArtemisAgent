@@ -564,6 +564,16 @@
     <string name="rendezvous_with">Rendezvous with:</string>
     <string name="restore_default_settings">Restore defaults</string>
     <string name="reverse_sorting_by_race">Reverse sorting by race</string>
+    <string name="review_error">Review Error</string>
+    <string name="review_error_message">
+        Review flow failed to start. Please try again later.\n\nError: %1$s
+    </string>
+    <string name="review_prompt">
+        You are advised to rate this app in the Google Play Store. Proceed?
+    </string>
+    <string name="review_title">
+        Enjoying Artemis Agent?
+    </string>
     <string name="rewards">Rewards: %1$s</string>
     <string-array name="reward_type_entries">
         <item>Battery Charge</item>
@@ -685,6 +695,7 @@
     </string>
     <string name="three_digit_directions_summary_off">DIR numbers will be shown normally.</string>
     <string name="turn_to_heading">Turn to:</string>
+    <string name="unknown">Unknown</string>
     <string name="unknown_error">Unknown error</string>
     <string name="update_interval">Update interval</string>
     <string name="vessel_data">Vessel data</string>

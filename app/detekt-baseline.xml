@@ -68,6 +68,7 @@
     <ID>ReturnCount:RoutingGraph.kt$RoutingGraph$suspend fun searchForRoute(): List&lt;RouteEntry&gt;?</ID>
     <ID>TooManyFunctions:AgentViewModel.kt$AgentViewModel : AndroidViewModelListener</ID>
     <ID>TooManyFunctions:CPU.kt$CPU : CoroutineScope</ID>
+    <ID>TooManyFunctions:MainActivity.kt$MainActivity : AppCompatActivity</ID>
     <ID>TooManyFunctions:ObjectEntry.kt$ObjectEntry$Station : ObjectEntry</ID>
   </CurrentIssues>
 </SmellBaseline>
