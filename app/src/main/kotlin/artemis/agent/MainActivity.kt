@@ -119,6 +119,8 @@ class MainActivity : AppCompatActivity() {
 
             binder.viewModel = viewModel
 
+            notificationRequests = 0
+
             service.collectLatestWhileStarted(viewModel.inventory) { inv ->
                 if (!viewModel.gameIsRunning.value) return@collectLatestWhileStarted
 
@@ -300,8 +302,6 @@ class MainActivity : AppCompatActivity() {
                     setBuilder = { notificationManager.reset() }
                 )
             }
-
-            notificationRequests = 0
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
