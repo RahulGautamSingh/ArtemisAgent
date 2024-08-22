@@ -8,9 +8,7 @@ import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldContain
-import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.equals.shouldBeEqual
-import io.kotest.matchers.types.shouldBeInstanceOf
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.byte
 import io.kotest.property.arbitrary.byteArray
@@ -27,33 +25,10 @@ class ParseResultTest : DescribeSpec({
     afterSpec { clearAllMocks() }
 
     describe("ParseResult") {
-        val unparsedPackets = mutableListOf<Packet.Raw>()
-
         describe("Processing") {
-            val processing = mutableListOf<ParseResult.Processing>()
-
-            it("Packet is unparsed") {
-                checkAll(
-                    Arb.int(),
-                    Arb.byteArray(Arb.nonNegativeInt(UShort.MAX_VALUE.toInt()), Arb.byte()),
-                ) { expectedPacketType, expectedPayload ->
-                    val result = ParseResult.Processing(
-                        expectedPacketType,
-                        expectedPayload,
-                    )
-
-                    val packet = result.packet.shouldBeInstanceOf<Packet.Raw>()
-                    packet.type shouldBeEqual expectedPacketType
-                    packet.payload.toList() shouldContainExactly expectedPayload.toList()
-
-                    processing.add(result)
-                    unparsedPackets.add(packet)
-                }
-            }
-
             it("Cannot fire listeners") {
-                processing.forEach {
-                    shouldThrow<UnsupportedOperationException> { it.fireListeners() }
+                shouldThrow<UnsupportedOperationException> {
+                    ParseResult.Processing().fireListeners()
                 }
             }
         }
@@ -62,29 +37,15 @@ class ParseResultTest : DescribeSpec({
             val fails = mutableListOf<ParseResult.Fail>()
 
             it("Constructor") {
-                fails.addAll(
-                    unparsedPackets.map {
-                        ParseResult.Fail(
-                            PacketException(
-                                RuntimeException(),
-                                it.type,
-                                it.payload,
-                            )
-                        )
-                    }.onEach {
-                        shouldThrow<PacketException> { throw it.exception }
-                    }
-                )
-            }
-
-            it("Packet is generated from PacketException") {
-                unparsedPackets.zip(fails).forEach { (unparsed, result) ->
-                    val expectedPacketType = unparsed.type
-                    val expectedPayload = unparsed.payload
-
-                    val packet = result.packet.shouldBeInstanceOf<Packet.Raw>()
-                    packet.type shouldBeEqual expectedPacketType
-                    packet.payload.toList() shouldContainExactly expectedPayload.toList()
+                checkAll(
+                    Arb.int(),
+                    Arb.byteArray(Arb.nonNegativeInt(UShort.MAX_VALUE.toInt()), Arb.byte()),
+                ) { packetType, payload ->
+                    val exception = PacketException(RuntimeException(), packetType, payload)
+                    val fail = ParseResult.Fail(exception)
+                    fail.exception shouldBeEqual exception
+                    shouldThrow<PacketException> { throw fail.exception }
+                    fails.add(fail)
                 }
             }
 
@@ -105,7 +66,7 @@ class ParseResultTest : DescribeSpec({
 
         describe("Interesting") {
             it("With listeners: true") {
-                val result = ParseResult.Processing(0, byteArrayOf())
+                val result = ParseResult.Processing()
                 result.addListeners(listOf(mockListener))
                 result.isInteresting.shouldBeTrue()
             }
@@ -116,7 +77,7 @@ class ParseResultTest : DescribeSpec({
             }
 
             it("Copied from previous result") {
-                val previous = ParseResult.Processing(0, byteArrayOf())
+                val previous = ParseResult.Processing()
                 previous.addListeners(listOf(mockListener))
                 val success = ParseResult.Success(mockk(), previous)
                 success.isInteresting.shouldBeTrue()

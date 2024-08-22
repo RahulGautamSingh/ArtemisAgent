@@ -74,27 +74,5 @@ class PacketExceptionTest : DescribeSpec({
         it("Can be thrown") {
             exceptionDetails.forEach { shouldThrow<PacketException> { throw it.first } }
         }
-
-        describe("Unknown packet") {
-            it("Can create") {
-                exceptionDetails.forEach { (ex, packetType, payload) ->
-                    val packet = ex.toUnknownPacket().shouldBeInstanceOf<Packet.Raw>()
-                    packet.type shouldBeEqual packetType
-                    packet.payload.toList() shouldContainExactly payload.toList()
-                }
-            }
-
-            it("Throws with null payload") {
-                exceptionDetails.forEach { (_, packetType, _) ->
-                    val ex = PacketException(
-                        RuntimeException(),
-                        packetType,
-                        null,
-                    )
-
-                    shouldThrow<IllegalStateException> { ex.toUnknownPacket() }
-                }
-            }
-        }
     }
 })

@@ -64,15 +64,6 @@ class PacketException private constructor(
         this.payload = payload
     }
 
-    /**
-     * Convert the data in this exception to an UnknownPacket. An
-     * [IllegalStateException] will occur if the payload is null.
-     */
-    fun toUnknownPacket(): Packet.Raw = Packet.Raw(
-        packetType,
-        checkNotNull(payload) { "Unknown payload" }
-    )
-
     private companion object {
         @Suppress("ConstPropertyName")
         private const val serialVersionUID = 6305993950844264082L

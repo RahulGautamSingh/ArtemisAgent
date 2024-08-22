@@ -149,7 +149,7 @@ class PacketReader(
             val factory = protocol.getFactory(packetType, subtype.toByte()) ?: continue
             val factoryClass = factory.factoryClass
             val payloadBytes = payloadPacket.copy().use { it.readBytes() }
-            val result: ParseResult = ParseResult.Processing(packetType, payloadBytes)
+            val result: ParseResult = ParseResult.Processing()
             var packet: Packet.Server
 
             // Find out if any listeners are interested in this packet type
