@@ -69,10 +69,9 @@ object WeaponsParser : AbstractObjectParser<ArtemisPlayer>(ObjectType.WEAPONS_CO
 
         repeat(Artemis.MAX_TUBES) {
             val contentsBit = TubeContentsBit(it)
-            if (tubeStates[it] != TubeState.UNLOADED) {
-                tubeContents[it] = reader.readByteAsEnum<OrdnanceType>(contentsBit)
-            } else {
-                reader.readByte(contentsBit)
+            when (tubeStates[it]) {
+                null, TubeState.UNLOADED -> reader.readByte(contentsBit)
+                else -> tubeContents[it] = reader.readByteAsEnum<OrdnanceType>(contentsBit)
             }
         }
     }
