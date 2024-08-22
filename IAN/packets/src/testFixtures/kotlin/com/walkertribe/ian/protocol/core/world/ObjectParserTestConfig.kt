@@ -1362,7 +1362,7 @@ sealed class ObjectParserTestConfig(val recognizesObjectListeners: Boolean) {
                         tube.state.shouldBeUnspecified()
                     }
 
-                    if (contentsFlag.enabled && status != TubeState.UNLOADED) {
+                    if (contentsFlag.enabled && status != null && status != TubeState.UNLOADED) {
                         tube.lastContents shouldContainValue contents
                         if (status == TubeState.LOADING || status == TubeState.LOADED) {
                             tube.contents.shouldNotBeNull() shouldBeEqual contents
