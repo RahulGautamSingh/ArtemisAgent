@@ -1338,7 +1338,6 @@ sealed class ObjectParserTestConfig(val recognizesObjectListeners: Boolean) {
                 obj.hasWeaponsData shouldBeEqual arrayOf(
                     countFlags,
                     statusFlags,
-                    typeFlags,
                 ).any { flags -> flags.any { flag -> flag.enabled } }
 
                 countFlags.zip(obj.ordnanceCounts).forEach { (flag, property) ->
@@ -1374,7 +1373,7 @@ sealed class ObjectParserTestConfig(val recognizesObjectListeners: Boolean) {
                         tube.contents.shouldBeNull()
                     }
 
-                    tube.hasData.shouldBeEqual(statusFlag.enabled || contentsFlag.enabled)
+                    tube.hasData.shouldBeEqual(statusFlag.enabled)
                 }
             }
         }
