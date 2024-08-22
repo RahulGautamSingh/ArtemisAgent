@@ -39,11 +39,8 @@ class SetupFragment : Fragment(R.layout.setup_fragment) {
             }
         }
 
-    private var lastUrl: String = ""
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lastUrl = viewModel.lastAttemptedHost
 
         binding.connectPageButton.setOnClickListener {
             viewModel.playSound(SoundEffect.BEEP_2)
@@ -62,8 +59,7 @@ class SetupFragment : Fragment(R.layout.setup_fragment) {
         }
 
         viewLifecycleOwner.collectLatestWhileStarted(viewModel.connectedUrl) {
-            if (it.isNotEmpty() && it != lastUrl) {
-                lastUrl = it
+            if (it.isNotEmpty()) {
                 binding.shipsPageButton.isChecked = true
             }
         }

@@ -464,7 +464,6 @@ class MainActivity : AppCompatActivity() {
             collectLatestWhileStarted(connectionStatus) {
                 if (isIdle) {
                     selectableShips.value = listOf()
-                    connectedUrl.value = ""
                 }
             }
 

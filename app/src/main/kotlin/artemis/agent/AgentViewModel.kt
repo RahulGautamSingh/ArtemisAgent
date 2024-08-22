@@ -713,8 +713,8 @@ class AgentViewModel(application: Application) :
         cpu.launch {
             if (shipIndex.value != index) {
                 playerChange = true
+                shipIndex.value = index
             }
-            shipIndex.value = index
             sendToServer(
                 SetShipPacket(index),
                 SetConsolePacket(Console.COMMUNICATIONS),
@@ -731,7 +731,7 @@ class AgentViewModel(application: Application) :
      * if any.
      */
     fun connectToServer() {
-        disconnectFromServer(playDisconnectSound = false)
+        disconnectFromServer(resetUrl = false)
         connectionStatus.value = ConnectionStatus.Connecting
         playSound(SoundEffect.CONFIRMATION)
     }
@@ -765,11 +765,13 @@ class AgentViewModel(application: Application) :
     /**
      * Terminates the current server connection.
      */
-    fun disconnectFromServer(playDisconnectSound: Boolean = true) {
+    fun disconnectFromServer(resetUrl: Boolean = true) {
         playerChange = false
         endGame()
-        if (playDisconnectSound) {
+        if (resetUrl) {
             playSound(SoundEffect.DISCONNECTED)
+            connectedUrl.value = ""
+            shipIndex.value = -1
         }
         ifConnected {
             networkInterface.stop()
@@ -1248,13 +1250,14 @@ class AgentViewModel(application: Application) :
 
         if (lastAttemptedHost != connectedUrl.value) {
             connectedUrl.value = lastAttemptedHost
+        } else if (shipIndex.value >= 0) {
+            selectShip(shipIndex.value)
         }
     }
 
     @Listener
     fun onDisconnect(event: ConnectionEvent.Disconnect) {
         disconnectCause.tryEmit(event.cause)
-        shipIndex.value = -1
         connectionStatus.value = ConnectionStatus.NotConnected
 
         if (event.cause !is DisconnectCause.LocalDisconnect) {
@@ -1417,7 +1420,7 @@ class AgentViewModel(application: Application) :
         }
 
     override fun onCleared() {
-        disconnectFromServer(playDisconnectSound = false)
+        disconnectFromServer(resetUrl = false)
         networkInterface.dispose()
 
         sounds.forEach { it?.release() }
