@@ -83,6 +83,12 @@ dependencies {
     implementation(libs.bundles.app)
     debugImplementation(libs.bundles.app.debug)
     androidTestImplementation(libs.bundles.app.androidTest)
+
+    constraints {
+        androidTestImplementation("org.jsoup:jsoup:latest.release") {
+            because("Version 1.14.2 patches a high-level security vulnerability")
+        }
+    }
 }
 
 detekt {
