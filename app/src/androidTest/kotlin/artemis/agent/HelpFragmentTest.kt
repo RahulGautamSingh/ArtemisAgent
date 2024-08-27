@@ -25,6 +25,7 @@ class HelpFragmentTest {
             R.string.help_topics_allies,
             R.string.help_topics_missions,
             R.string.help_topics_routing,
+            R.string.help_topics_enemies,
             R.string.help_topics_biomechs,
             R.string.help_topics_about,
         )
