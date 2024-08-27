@@ -8,6 +8,7 @@ import korlibs.io.serialization.xml.Xml
  * @author rjwut
  */
 sealed interface VesselData {
+    @ConsistentCopyVisibility
     data class Loaded internal constructor(
         /**
          * Returns a List containing all the Factions.
