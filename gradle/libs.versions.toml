@@ -40,6 +40,7 @@ mockk = "1.13.12"
 okio = "3.9.0"
 pitest = "1.16.1"
 pitest-junit5 = "1.2.1"
+play-services-tasks = "18.2.0"
 protobuf = "4.27.3"
 protobuf-plugin = "0.9.4"
 task-tree = "4.0.0"
@@ -91,6 +92,7 @@ multidex = { module = "androidx.multidex:multidex", version.ref = "androidx-mult
 recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "androidx-recyclerview" }
 
 app-review = { module = "com.google.android.play:review", version.ref = "app-review" }
+play-services-tasks = { module = "com.google.android.gms:play-services-tasks", version.ref = "play-services-tasks" }
 
 protobuf-javalite = { module = "com.google.protobuf:protobuf-javalite", version.ref = "protobuf" }
 protobuf-kotlin-lite = { module = "com.google.protobuf:protobuf-kotlin-lite", version.ref = "protobuf" }
@@ -157,6 +159,7 @@ app = [
     "protobuf-javalite",
     "protobuf-kotlin-lite",
     "app-review",
+    "play-services-tasks",
 ]
 app-debug = [
     "leakcanary",
