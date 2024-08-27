@@ -88,6 +88,12 @@ dependencies {
         androidTestImplementation("org.jsoup:jsoup:latest.release") {
             because("Version 1.14.2 patches a high-level security vulnerability")
         }
+        androidTestImplementation("com.google.android.apps.common.testing.accessibility.framework:accessibility-test-framework") {
+            version {
+                require("latest.release")
+            }
+            because("Needed to resolve static method registerDefaultInstance")
+        }
     }
 }
 
