@@ -31,7 +31,7 @@ class ConnectFragmentTest {
     fun scanTest() {
         val scanTimeout = AtomicInteger()
         activityScenarioRule.scenario.onActivity { activity ->
-            scanTimeout.set(activity.viewModels<AgentViewModel>().value.scanTimeout)
+            scanTimeout.lazySet(activity.viewModels<AgentViewModel>().value.scanTimeout)
         }
 
         assertEnabled(R.id.scanButton)
