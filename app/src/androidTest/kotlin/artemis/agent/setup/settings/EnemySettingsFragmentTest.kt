@@ -100,9 +100,9 @@ class EnemySettingsFragmentTest {
 
         val enemySortingLabels = intArrayOf(
             R.string.surrender,
-            R.string.sort_race,
-            R.string.sort_name,
-            R.string.sort_range,
+            R.string.sort_by_race,
+            R.string.sort_by_name,
+            R.string.sort_by_range,
         )
 
         fun testEnemySubMenuOpen(
@@ -165,7 +165,7 @@ class EnemySettingsFragmentTest {
 
         fun testEnemySubMenuSortMethods(sortMethods: BooleanArray, shouldTest: Boolean) {
             scrollTo(R.id.enemySortingDivider)
-            assertDisplayed(R.id.enemySortingTitle, R.string.ally_sorting_methods)
+            assertDisplayed(R.id.enemySortingTitle, R.string.sort_methods)
             assertDisplayed(R.id.enemySortingDefaultButton, R.string.default_setting)
 
             enemySortingButtonIDs.forEachIndexed { index, id ->

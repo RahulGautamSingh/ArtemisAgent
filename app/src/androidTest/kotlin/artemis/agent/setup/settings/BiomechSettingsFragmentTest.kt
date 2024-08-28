@@ -73,10 +73,10 @@ class BiomechSettingsFragmentTest {
         )
 
         val biomechSortingLabels = intArrayOf(
-            R.string.sort_class,
-            R.string.sort_status,
-            R.string.sort_class,
-            R.string.sort_name,
+            R.string.sort_by_class,
+            R.string.sort_by_status,
+            R.string.sort_by_class,
+            R.string.sort_by_name,
         )
 
         fun testBiomechsSubMenuOpen(sortMethods: BooleanArray, shouldTestSortMethods: Boolean) {
@@ -99,7 +99,7 @@ class BiomechSettingsFragmentTest {
 
         fun testBiomechSubMenuSortMethods(sortMethods: BooleanArray, shouldTest: Boolean) {
             scrollTo(R.id.biomechSortingDivider)
-            assertDisplayed(R.id.biomechSortingTitle, R.string.ally_sorting_methods)
+            assertDisplayed(R.id.biomechSortingTitle, R.string.sort_methods)
             assertDisplayed(R.id.biomechSortingDefaultButton, R.string.default_setting)
 
             biomechSortingButtonIDs.forEachIndexed { index, id ->

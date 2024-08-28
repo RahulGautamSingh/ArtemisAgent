@@ -8,7 +8,6 @@
     <string name="alert">Alert</string>
     <string name="all">All</string>
     <string name="ally_sorting">Ally sorting</string>
-    <string name="ally_sorting_methods">Sort methods</string>
     <string name="ally_status_ambassador_for_pirate">
         Pirate boss on board. Send shuttle to rescue.
     </string>
@@ -646,12 +645,13 @@
     <string name="single_seat_craft_launched">%1$d single-seat craft launched</string>
     <string name="single_seat_craft_lost">%1$d single-seat craft lost</string>
     <string name="some_incentives">Side missions + %1$d more</string>
-    <string name="sort_class">Class</string>
-    <string name="sort_energy">En</string>
-    <string name="sort_name">Name</string>
-    <string name="sort_race">Race</string>
-    <string name="sort_range">Range</string>
-    <string name="sort_status">Status</string>
+    <string name="sort_by_class">Class</string>
+    <string name="sort_by_energy">En</string>
+    <string name="sort_by_name">Name</string>
+    <string name="sort_by_race">Race</string>
+    <string name="sort_by_range">Range</string>
+    <string name="sort_by_status">Status</string>
+    <string name="sort_methods">Sort methods</string>
     <string name="sound_volume">Sound volume</string>
     <string name="sound_volume_summary">Minimum is 0, maximum is 100.</string>
     <string name="standby">Standby</string>

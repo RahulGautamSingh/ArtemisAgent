@@ -85,11 +85,11 @@ class AllySettingsFragmentTest {
         )
 
         val allySortingLabels = intArrayOf(
-            R.string.sort_class,
-            R.string.sort_energy,
-            R.string.sort_status,
-            R.string.sort_class,
-            R.string.sort_name,
+            R.string.sort_by_class,
+            R.string.sort_by_energy,
+            R.string.sort_by_status,
+            R.string.sort_by_class,
+            R.string.sort_by_name,
         )
 
         fun testAlliesSubMenuOpen(
@@ -131,7 +131,7 @@ class AllySettingsFragmentTest {
 
         fun testAllySubMenuSortMethods(sortMethods: BooleanArray, shouldTest: Boolean) {
             scrollTo(R.id.allySortingDivider)
-            assertDisplayed(R.id.allySortingTitle, R.string.ally_sorting_methods)
+            assertDisplayed(R.id.allySortingTitle, R.string.sort_methods)
             assertDisplayed(R.id.allySortingDefaultButton, R.string.default_setting)
 
             allySortingButtonIDs.forEachIndexed { index, id ->
