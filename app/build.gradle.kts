@@ -94,7 +94,10 @@ dependencies {
         androidTestImplementation("org.checkerframework:checker:3.33.0") {
             because("Needed to resolve duplicate classes")
         }
-        androidTestImplementation("com.google.android.apps.common.testing.accessibility.framework:accessibility-test-framework") {
+        androidTestImplementation(
+            "com.google.android.apps.common.testing.accessibility.framework" +
+                ":accessibility-test-framework"
+        ) {
             version {
                 require("latest.release")
             }
