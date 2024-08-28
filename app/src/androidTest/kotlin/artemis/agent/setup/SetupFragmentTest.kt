@@ -1,8 +1,10 @@
-package artemis.agent
+package artemis.agent.setup
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import artemis.agent.MainActivity
+import artemis.agent.R
 import com.adevinta.android.barista.assertion.BaristaCheckedAssertions.assertChecked
 import com.adevinta.android.barista.assertion.BaristaCheckedAssertions.assertUnchecked
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
