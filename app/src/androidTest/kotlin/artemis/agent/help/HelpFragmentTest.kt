@@ -18,16 +18,16 @@ import org.junit.runner.RunWith
 @LargeTest
 class HelpFragmentTest {
     private companion object {
-        val stringResources = intArrayOf(
-            R.string.help_topics_getting_started,
-            R.string.help_topics_basics,
-            R.string.help_topics_stations,
-            R.string.help_topics_allies,
-            R.string.help_topics_missions,
-            R.string.help_topics_routing,
-            R.string.help_topics_enemies,
-            R.string.help_topics_biomechs,
-            R.string.help_topics_about,
+        val helpTopics = arrayOf(
+            R.string.help_topics_getting_started to 8,
+            R.string.help_topics_basics to 4,
+            R.string.help_topics_stations to 12,
+            R.string.help_topics_allies to 4,
+            R.string.help_topics_missions to 14,
+            R.string.help_topics_routing to 6,
+            R.string.help_topics_enemies to 12,
+            R.string.help_topics_biomechs to 3,
+            R.string.help_topics_about to 5,
         )
     }
 
@@ -38,9 +38,9 @@ class HelpFragmentTest {
         assertNotDisplayed(R.id.helpTopicTitle)
         assertNotDisplayed(R.id.backButton)
         assertDisplayed(R.id.helpTopicContent)
-        assertRecyclerViewItemCount(R.id.helpTopicContent, stringResources.size)
+        assertRecyclerViewItemCount(R.id.helpTopicContent, helpTopics.size)
 
-        stringResources.forEachIndexed { index, res ->
+        helpTopics.forEachIndexed { index, (res, _) ->
             assertDisplayedAtPosition(R.id.helpTopicContent, index, res)
         }
     }
@@ -50,12 +50,13 @@ class HelpFragmentTest {
         clickOn(R.id.helpPageButton)
         assertHelpMenuDisplayed()
 
-        stringResources.forEach { stringRes ->
+        helpTopics.forEach { (stringRes, itemCount) ->
             clickOn(stringRes)
 
             assertDisplayed(R.id.helpTopicTitle, stringRes)
             assertDisplayed(R.id.backButton)
             assertDisplayed(R.id.helpTopicContent)
+            assertRecyclerViewItemCount(R.id.helpTopicContent, itemCount)
 
             clickOn(R.id.backButton)
 
