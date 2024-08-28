@@ -86,19 +86,13 @@ dependencies {
     androidTestImplementation(libs.bundles.app.androidTest)
 
     constraints {
-        androidTestImplementation("org.jsoup:jsoup:latest.release") {
+        androidTestImplementation(libs.jsoup) {
             because("Version 1.14.2 patches a high-level security vulnerability")
         }
-        androidTestImplementation("com.google.guava:guava:latest.release") {
+        androidTestImplementation(libs.guava) {
             because("Version 32.0.0-android patches a moderate security vulnerability")
         }
-        androidTestImplementation(
-            "com.google.android.apps.common.testing.accessibility.framework" +
-                ":accessibility-test-framework"
-        ) {
-            version {
-                require("latest.release")
-            }
+        androidTestImplementation(libs.accessibility.test.framework) {
             because("Needed to resolve static method registerDefaultInstance")
         }
     }

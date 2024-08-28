@@ -4,13 +4,13 @@ buildscript {
         classpath(libs.bundles.classpath)
 
         constraints {
-            classpath("org.apache.commons:commons-compress:latest.release") {
+            classpath(libs.commons.compress) {
                 because("Version 1.26 patches two high-level security vulnerabilities")
             }
-            classpath("io.netty:netty-codec-http2:4.1.+") {
+            classpath(libs.netty) {
                 because("Version 4.1.100.Final patches a high-level security vulnerability")
             }
-            classpath("org.bouncycastle:bcpkix-jdk18on:latest.release") {
+            classpath(libs.bouncycastle) {
                 because("Version 1.78 patches three moderate security vulnerabilities")
             }
         }
