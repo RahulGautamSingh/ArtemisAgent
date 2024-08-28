@@ -626,7 +626,7 @@ class AgentViewModel(application: Application) :
      */
     private fun calculateMissionsFor(
         entry: ObjectEntry<*>,
-        vararg rewards: RewardType = displayedRewards
+        reward: RewardType,
     ): Int = allMissions.filter {
         val isDest = it.destination == entry
         if (it.isStarted) {
@@ -634,7 +634,7 @@ class AgentViewModel(application: Application) :
         } else {
             isDest || it.source == entry
         }
-    }.sumOf { mission -> rewards.sumOf { mission.rewards[it.ordinal] } }
+    }.sumOf { it.rewards[reward.ordinal] }
 
     private fun reconcileDisplayedMissions(
         battery: Boolean,
@@ -644,13 +644,13 @@ class AgentViewModel(application: Application) :
         shieldBoost: Boolean,
     ) {
         val oldRewards = displayedRewards.copyOf()
-        val newRewards = mapOf(
-            RewardType.BATTERY to battery,
-            RewardType.COOLANT to coolant,
-            RewardType.NUKE to nukes,
-            RewardType.PRODUCTION to production,
-            RewardType.SHIELD to shieldBoost,
-        ).filterValues { it }.keys.sorted().toTypedArray()
+        val newRewards = listOfNotNull(
+            RewardType.BATTERY.takeIf { battery },
+            RewardType.COOLANT.takeIf { coolant },
+            RewardType.NUKE.takeIf { nukes },
+            RewardType.PRODUCTION.takeIf { production },
+            RewardType.SHIELD.takeIf { shieldBoost },
+        ).toTypedArray()
         displayedRewards = newRewards
 
         var oldIndex = 0
