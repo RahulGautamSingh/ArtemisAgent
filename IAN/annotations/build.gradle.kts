@@ -5,6 +5,7 @@ plugins {
   id("java-library")
   id("kotlin")
   alias(libs.plugins.detekt)
+  alias(libs.plugins.dependency.analysis)
 }
 
 val javaVersion: JavaVersion by rootProject.extra
