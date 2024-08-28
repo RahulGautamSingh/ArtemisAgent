@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kover)
     id("info.solidsoft.pitest")
     alias(libs.plugins.detekt)
+    alias(libs.plugins.dependency.analysis)
 }
 
 val javaVersion: JavaVersion by rootProject.extra

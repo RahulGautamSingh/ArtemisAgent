@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     id("java-library")
     id("kotlin")
+    alias(libs.plugins.dependency.analysis)
 }
 
 val javaVersion: JavaVersion by rootProject.extra

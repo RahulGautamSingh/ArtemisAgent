@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     kotlin("android")
+    alias(libs.plugins.dependency.analysis)
 }
 
 val sdkVersion: Int by rootProject.extra

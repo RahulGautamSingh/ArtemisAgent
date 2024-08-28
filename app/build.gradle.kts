@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.protobuf)
     alias(libs.plugins.detekt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.dependency.analysis)
 }
 
 val appName: String = "Artemis Agent"
