@@ -330,7 +330,7 @@ class AgentViewModel(application: Application) :
     val biomechs: MutableSharedFlow<List<BiomechEntry>> by lazy {
         MutableSharedFlow(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
     }
-    private var biomechSorter = BiomechSorter()
+    var biomechSorter = BiomechSorter()
     val scannedBiomechs = CopyOnWriteArrayList<BiomechEntry>()
     val unscannedBiomechs = ConcurrentHashMap<Int, ArtemisNpc>()
 
@@ -349,7 +349,7 @@ class AgentViewModel(application: Application) :
     }
 
     // Enemy ship data
-    private var enemiesEnabled: Boolean = true
+    var enemiesEnabled: Boolean = true
     val selectedEnemy: MutableStateFlow<EnemyEntry?> by lazy { MutableStateFlow(null) }
     val selectedEnemyIndex: MutableStateFlow<Int> by lazy { MutableStateFlow(-1) }
     val displayedEnemies: MutableSharedFlow<List<EnemyEntry>> by lazy {
@@ -362,7 +362,7 @@ class AgentViewModel(application: Application) :
         MutableStateFlow(listOf())
     }
     val enemyIntel: MutableStateFlow<String?> by lazy { MutableStateFlow(null) }
-    private var enemySorter = EnemySorter()
+    var enemySorter = EnemySorter()
     val enemyNameIndex = ConcurrentHashMap<String, Int>()
     val enemies = ConcurrentHashMap<Int, EnemyEntry>()
     var showTauntStatuses: Boolean = true
@@ -409,7 +409,7 @@ class AgentViewModel(application: Application) :
     private var updateJob: Job? = null
 
     // Determines whether directions are shown as padded three-digit numbers
-    private var threeDigitDirections = true
+    var threeDigitDirections = true
 
     // Page flash variables
     var missionUpdate: Boolean = false
