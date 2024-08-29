@@ -46,10 +46,7 @@ class PersonalSettingsFragment : Fragment(R.layout.settings_personal) {
                 if (it.threeDigitDirections) "000" else "0"
             )
 
-            if (volume != it.soundVolume) {
-                volume = it.soundVolume
-                binding.soundVolumeBar.progress = it.soundVolume
-            }
+            binding.soundVolumeBar.progress = it.soundVolume
         }
 
         themeOptionButtons.forEachIndexed { index, button ->
@@ -76,9 +73,6 @@ class PersonalSettingsFragment : Fragment(R.layout.settings_personal) {
                 }
             }
         }
-
-        binding.soundVolumeBar.progress = volume
-        binding.soundVolumeLabel.text = volume.toString()
 
         binding.soundVolumeBar.setOnSeekBarChangeListener(
             object : OnSeekBarChangeListener {
