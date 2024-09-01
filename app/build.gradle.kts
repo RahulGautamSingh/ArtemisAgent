@@ -32,6 +32,7 @@ android {
     compileOptions {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
+        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
@@ -96,6 +97,8 @@ dependencies {
             because("Needed to resolve static method registerDefaultInstance")
         }
     }
+
+    coreLibraryDesugaring(libs.desugaring)
 }
 
 detekt {
