@@ -7,7 +7,6 @@
     <string name="agent">Agent</string>
     <string name="alert">Alert</string>
     <string name="all">All</string>
-    <string name="ally_sorting">Ally sorting</string>
     <string name="ally_status_ambassador_for_pirate">
         Pirate boss on board. Send shuttle to rescue.
     </string>
@@ -62,24 +61,12 @@
     <string name="audio">Audio</string>
     <string name="auto_dismissal">Auto-dismissal</string>
     <string name="available_servers">Available servers</string>
-    <string name="avoid_all">Avoid/Ignore All</string>
     <string name="avoidance_black_hole">Black holes</string>
     <string name="avoidance_mine">Mines</string>
     <string name="avoidance_typhon">Typhons</string>
     <string name="avoidances">Avoidances</string>
-    <string-array name="avoidance_entries">
-        <item>Black holes</item>
-        <item>Mines</item>
-        <item>Typhons</item>
-    </string-array>
-    <string-array name="avoidance_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
     <string name="back">Back</string>
     <string name="biomech_rage">Status: %1$s</string>
-    <string name="biomechs">Biomechs</string>
     <string name="biomech_cannot_freeze">Freeze limit reached; cannot freeze again</string>
     <string name="biomech_frozen">Frozen - reanimation estimated in %1$d:%2$02d</string>
     <string name="biomech_moving">Mobile; touch to freeze</string>
@@ -113,9 +100,7 @@
     <string name="colon">:</string>
     <string name="command">Command</string>
     <string name="completed">Completed</string>
-    <string name="completed_mission_dismissal">Completed mission auto-dismissal</string>
     <string name="connect">Connect</string>
-    <string name="connect_timeout">Connect timeout</string>
     <string name="connected">Connected!</string>
     <string name="connecting">Connecting…</string>
     <string name="connection_closed">Connection closed</string>
@@ -151,8 +136,6 @@
     <string name="displayed_rewards">Displayed rewards</string>
     <string name="docked">Docked</string>
     <string name="docking">Docking</string>
-    <string name="enable_routing">Enable routing</string>
-    <string name="enable_sound_effects">Enable sound effects</string>
     <string name="enemy">Enemy</string>
     <string name="enemy_status_brave">Brave</string>
     <string name="enemy_status_cowardly">Cowardly</string>
@@ -482,7 +465,6 @@
     <string name="help_topics_missions">Missions</string>
     <string name="help_topics_routing">Routing</string>
     <string name="help_topics_stations">Stations</string>
-    <string name="include_all">Include/Exclude All</string>
     <string name="included_incentives">Included incentives</string>
     <string name="infinity">\u221E</string>
     <string name="inventory">Inv</string>
@@ -497,13 +479,11 @@
     <string name="mission_battery">Battery</string>
     <string name="mission_completed">Mission completed</string>
     <string name="mission_coolant">Coolant</string>
-    <string name="mission_display">Mission Display</string>
     <string name="mission_nuke">Nuke</string>
     <string name="mission_production">Production</string>
     <string name="mission_shield">Shield</string>
     <string name="mission_will_be_removed">Will be removed in %1$ds</string>
     <string name="more_commands">More commands:</string>
-    <string name="network">Network</string>
     <string name="next_to">Next: %1$s %2$s %3$s</string>
     <string name="no">No</string>
     <string name="no_enemies">Scanned enemies will be displayed here.</string>
@@ -513,40 +493,10 @@
     <string name="no_stations">No stations.</string>
     <string name="none">None</string>
     <string name="not_connected">Not connected</string>
-    <string-array name="object_sort_entries">
-        <item>Default</item>
-        <item>Name</item>
-        <item>Class</item>
-        <item>Status</item>
-        <item>Class, then name</item>
-        <item>Status, then name</item>
-        <item>Class, then status</item>
-        <item>Status, then class</item>
-        <item>Class, status, name</item>
-        <item>Status, class, name</item>
-    </string-array>
-    <string-array name="object_sort_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-    </string-array>
     <string name="off">Off</string>
     <string name="on">On</string>
     <string name="ordnance_stock">%1$s: %2$d/%3$d</string>
-    <string name="personal_settings">Personal settings</string>
     <string name="play">Play</string>
-    <string name="prioritize_energy">Prioritize energy</string>
-    <string name="prioritize_energy_summary_off">Allies will be sorted as usual.</string>
-    <string name="prioritize_energy_summary_on">
-        Allies with energy to offer will be placed higher in the list.
-    </string>
     <string name="proceed_to_your_destination">Proceed</string>
     <string name="range">RANGE %1$.0f</string>
     <string name="rear_shield">R %1$.0f/%2$.0f</string>
@@ -581,13 +531,6 @@
         <item>Production Speed</item>
         <item>Shield Boost</item>
     </string-array>
-    <string-array name="reward_type_ordinals">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
     <string name="right">Right</string>
     <string name="route_for_supplies">Route for supplies</string>
     <string name="route_incentive_missions">Missions</string>
@@ -598,33 +541,12 @@
     <string name="route_incentive_ambassador">Ambassador</string>
     <string name="route_incentive_hostage">Hostage</string>
     <string name="route_incentive_commandeered">Commandeered</string>
-    <string name="routing">Routing</string>
-    <string-array name="routing_incentive_entries">
-        <item>Ally needs energy</item>
-        <item>Ally needs DamCon team</item>
-        <item>Ally computer malfunction</item>
-        <item>Ally ambassador pickup</item>
-        <item>Ally taken hostage</item>
-        <item>Ally commandeered</item>
-        <item>Ally has energy</item>
-    </string-array>
-    <string-array name="routing_incentive_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-    </string-array>
     <string name="scan">Scan</string>
     <string name="scan_timeout">Scan timeout</string>
     <string name="seconds">sec</string>
     <string name="selected">Selected</string>
-    <string name="selected_enemy">Selected: %s</string>
     <string name="send">Send</string>
     <string name="server_port">Server port</string>
-    <string name="server_timeout">Server timeout</string>
     <string name="settings">Settings</string>
     <string name="settings_menu_client">Client settings</string>
     <string name="settings_menu_connection">Connection settings</string>
@@ -638,13 +560,11 @@
     <string name="ship_number">Ship %1$d</string>
     <string name="ships">Ships</string>
     <string name="show_destroyed_allies">Show destroyed allies</string>
-    <string name="show_hide_all">Show/Hide All</string>
     <string name="show_intel">Show intel</string>
     <string name="show_taunt_status">Show taunt status</string>
     <string name="single_seat_craft_docked">%1$d single-seat craft docked</string>
     <string name="single_seat_craft_launched">%1$d single-seat craft launched</string>
     <string name="single_seat_craft_lost">%1$d single-seat craft lost</string>
-    <string name="some_incentives">Side missions + %1$d more</string>
     <string name="sort_by_class">Class</string>
     <string name="sort_by_energy">En</string>
     <string name="sort_by_name">Name</string>
@@ -653,7 +573,6 @@
     <string name="sort_by_status">Status</string>
     <string name="sort_methods">Sort methods</string>
     <string name="sound_volume">Sound volume</string>
-    <string name="sound_volume_summary">Minimum is 0, maximum is 100.</string>
     <string name="standby">Standby</string>
     <string name="station_shield">SHLD %1$.0f/%2$.0f</string>
     <string name="station_speed">Speed factor %1$.1f</string>
@@ -672,28 +591,8 @@
     <string name="taunts_two">Taunted twice</string>
     <string name="taunts_zero">Has not been taunted</string>
     <string name="theme">Theme</string>
-    <string-array name="theme_pref_entries">
-        <item>Default</item>
-        <item>Red</item>
-        <item>Green</item>
-        <item>Yellow</item>
-        <item>Blue</item>
-        <item>Purple</item>
-    </string-array>
-    <string-array name="theme_pref_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-    </string-array>
     <string name="then_to">Then: %1$s %2$s %3$s</string>
     <string name="three_digit_directions">Three-digit directions</string>
-    <string name="three_digit_directions_summary_on">
-        DIR numbers will be padded with zeroes.
-    </string>
-    <string name="three_digit_directions_summary_off">DIR numbers will be shown normally.</string>
     <string name="turn_to_heading">Turn to:</string>
     <string name="unknown">Unknown</string>
     <string name="unknown_error">Unknown error</string>
@@ -701,16 +600,6 @@
     <string name="vessel_data">Vessel data</string>
     <string name="vessel_data_external">External</string>
     <string name="vessel_data_internal">Internal</string>
-    <string-array name="vessel_data_pref_entries">
-        <item>Default</item>
-        <item>Internal storage</item>
-        <item>External storage</item>
-    </string-array>
-    <string-array name="vessel_data_pref_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
     <string name="vessel_data_xml_location">Vessel data XML location</string>
     <string name="waiting_for_game">Waiting for game to start…</string>
     <string name="xml_error">XML Error</string>
@@ -718,7 +607,6 @@
         Vessel data could not be loaded. There is an error in the XML file. The setting has been
         reverted. Either resolve the error or delete the XML file.\n\nError: %1$s
     </string>
-    <string name="xml_location">XML location</string>
     <string name="xml_location_warning">
         WARNING: There is an active connection to an Artemis server. The connection will be
         terminated if you change the vessel data. Proceed?
