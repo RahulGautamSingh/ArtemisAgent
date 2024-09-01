@@ -25,6 +25,7 @@
         <item name="android:autoCompleteTextViewStyle">@style/Widget.ArtemisAgent.AutoCompleteTextView</item>
         <item name="alertDialogTheme">@style/ThemeOverlay.ArtemisAgent.AlertDialog</item>
         <item name="android:alertDialogTheme">@style/ThemeOverlay.ArtemisAgent.AlertDialog</item>
+        <item name="android:navigationBarColor">?attr/colorPrimaryDark</item>
         <item name="seekBarStyle">@style/Widget.ArtemisAgent.SeekBar</item>
         <item name="android:seekBarStyle">@style/Widget.ArtemisAgent.SeekBar</item>
     </style>
