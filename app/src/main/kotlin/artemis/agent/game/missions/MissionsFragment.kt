@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import artemis.agent.AgentViewModel
+import artemis.agent.AgentViewModel.Companion.formatString
 import artemis.agent.R
 import artemis.agent.SoundEffect
 import artemis.agent.collectLatestWhileStarted
@@ -243,7 +244,7 @@ class MissionsFragment : Fragment(R.layout.missions_fragment) {
     ) : RecyclerView.ViewHolder(entryBinding.root) {
         fun bind(label: String, count: Int) {
             entryBinding.rewardTypeLabel.text = label
-            entryBinding.rewardQuantityLabel.text = count.toString()
+            entryBinding.rewardQuantityLabel.text = count.formatString()
         }
     }
 

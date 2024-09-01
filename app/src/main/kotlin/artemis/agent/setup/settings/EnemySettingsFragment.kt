@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.viewModelScope
 import artemis.agent.AgentViewModel
+import artemis.agent.AgentViewModel.Companion.formatString
 import artemis.agent.R
 import artemis.agent.SoundEffect
 import artemis.agent.UserSettingsKt
@@ -74,7 +75,7 @@ class EnemySettingsFragment : Fragment(R.layout.settings_enemies) {
             binding.reverseRaceSortTitle.visibility = reverseRaceSortVisibility
 
             playSoundsOnTextChange = false
-            binding.surrenderRangeField.setText(it.surrenderRange.toString())
+            binding.surrenderRangeField.setText(it.surrenderRange.formatString())
             playSoundsOnTextChange = true
         }
 

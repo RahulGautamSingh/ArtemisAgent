@@ -1,6 +1,7 @@
 package artemis.agent.setup.settings
 
 import android.view.View
+import artemis.agent.AgentViewModel.Companion.formatString
 import artemis.agent.databinding.SecondsInputBinding
 
 abstract class TimeInputBinder(
@@ -19,7 +20,7 @@ abstract class TimeInputBinder(
             val withoutOnes = seconds / TEN
 
             binding?.apply {
-                secondsOne.text = ones.toString()
+                secondsOne.text = ones.formatString()
                 secondsOneDownButton.setOnClickListener {
                     onSecondsChange(minimumSeconds.coerceAtLeast(seconds - 1))
                 }
@@ -36,8 +37,8 @@ abstract class TimeInputBinder(
                     minutesUpButton.visibility = View.VISIBLE
                     colon.visibility = View.VISIBLE
 
-                    secondsTen.text = tens.toString()
-                    minutes.text = mins.toString()
+                    secondsTen.text = tens.formatString()
+                    minutes.text = mins.formatString()
 
                     secondsOneUpButton.setOnClickListener {
                         onSecondsChange(MAX_WITH_MINUTES.coerceAtMost(seconds + 1))
@@ -57,7 +58,7 @@ abstract class TimeInputBinder(
                     minutesUpButton.visibility = View.GONE
                     colon.visibility = View.GONE
 
-                    secondsTen.text = withoutOnes.toString()
+                    secondsTen.text = withoutOnes.formatString()
                     secondsOneUpButton.setOnClickListener {
                         onSecondsChange(MAX_WITHOUT_MINUTES.coerceAtMost(seconds + 1))
                     }

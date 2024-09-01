@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.viewModelScope
 import artemis.agent.AgentViewModel
+import artemis.agent.AgentViewModel.Companion.formatString
 import artemis.agent.R
 import artemis.agent.SoundEffect
 import artemis.agent.UserSettingsSerializer.userSettings
@@ -73,9 +74,9 @@ class ClientSettingsFragment : Fragment(R.layout.settings_client) {
             }
 
             playSoundsOnTextChange = false
-            binding.serverPortField.setText(it.serverPort.toString())
-            binding.addressLimitField.setText(it.recentAddressLimit.toString())
-            binding.updateIntervalField.setText(it.updateInterval.toString())
+            binding.serverPortField.setText(it.serverPort.formatString())
+            binding.addressLimitField.setText(it.recentAddressLimit.formatString())
+            binding.updateIntervalField.setText(it.updateInterval.formatString())
             playSoundsOnTextChange = true
         }
 
@@ -99,7 +100,7 @@ class ClientSettingsFragment : Fragment(R.layout.settings_client) {
             viewModel.viewModelScope.launch {
                 view.context.userSettings.updateData {
                     if (text.isNullOrBlank()) {
-                        binding.serverPortField.setText(it.serverPort.toString())
+                        binding.serverPortField.setText(it.serverPort.formatString())
                         it
                     } else {
                         it.copy { serverPort = text.toInt() }

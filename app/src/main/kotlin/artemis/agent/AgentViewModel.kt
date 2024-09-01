@@ -97,6 +97,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okio.Path.Companion.toOkioPath
 import java.io.File
+import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentSkipListMap
 import java.util.concurrent.CopyOnWriteArrayList
@@ -1658,5 +1659,7 @@ class AgentViewModel(application: Application) :
             val minutes = totalSeconds / SECONDS_PER_MINUTE
             return Pair(minutes, seconds)
         }
+
+        fun Int.formatString(): String = toString().format(Locale.getDefault())
     }
 }

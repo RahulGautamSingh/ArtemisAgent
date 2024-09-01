@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.viewModelScope
 import artemis.agent.AgentViewModel
+import artemis.agent.AgentViewModel.Companion.formatString
 import artemis.agent.R
 import artemis.agent.SoundEffect
 import artemis.agent.UserSettingsKt
@@ -100,7 +101,7 @@ class RoutingSettingsFragment : Fragment(R.layout.settings_routing) {
                         avoidance.kmLabel.visibility = View.VISIBLE
                         avoidance.clearanceField.visibility = View.VISIBLE
                         avoidance.clearanceField.setText(
-                            avoidance.clearanceSetting.get(this).toString(),
+                            avoidance.clearanceSetting.get(this).formatString(),
                         )
                     } else {
                         avoidance.toggleButton.isChecked = false

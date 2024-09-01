@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.viewModelScope
 import artemis.agent.AgentViewModel
+import artemis.agent.AgentViewModel.Companion.formatString
 import artemis.agent.R
 import artemis.agent.SoundEffect
 import artemis.agent.UserSettingsSerializer.userSettings
@@ -74,6 +75,8 @@ class PersonalSettingsFragment : Fragment(R.layout.settings_personal) {
             }
         }
 
+        binding.soundVolumeLabel.text = volume.formatString()
+
         binding.soundVolumeBar.setOnSeekBarChangeListener(
             object : OnSeekBarChangeListener {
                 override fun onProgressChanged(
@@ -82,7 +85,7 @@ class PersonalSettingsFragment : Fragment(R.layout.settings_personal) {
                     fromUser: Boolean
                 ) {
                     volume = progress
-                    binding.soundVolumeLabel.text = progress.toString()
+                    binding.soundVolumeLabel.text = progress.formatString()
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {
