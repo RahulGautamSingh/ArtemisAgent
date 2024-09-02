@@ -47,11 +47,13 @@ class ArtemisObjectKonsistTest : DescribeSpec({
     }
 
     describe("Object classes have one primary constructor accepting ID and timestamp") {
-        val requiredParameterTypes = listOf("Int", "Long")
+        val requiredParameters = listOf("id" to "Int", "timestamp" to "Long")
         withData(nameFn = { it.name }, objectClasses) { cls ->
             cls.assertTrue {
                 it.primaryConstructor?.takeIf { constr ->
-                    constr.parameters.map { param -> param.type.name } == requiredParameterTypes
+                    constr.parameters.map { param ->
+                        param.name to param.type.name
+                    } == requiredParameters
                 } != null
             }
         }
