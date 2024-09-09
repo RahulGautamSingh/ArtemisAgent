@@ -879,26 +879,27 @@ internal class RoutingGraph(
             sourceZ: Float,
             destX: Float,
             destZ: Float
-        ): Float {
-            if (sourceX.isNaN() || sourceZ.isNaN() || destX.isNaN() || destZ.isNaN()) {
-                return Float.NaN
+        ): Float =
+            if (allDefined(sourceX, sourceX, destX, destZ)) {
+                val dx = destX - sourceX
+                val dz = destZ - sourceZ
+                val simpleDistance = sqrt(dx * dx + dz * dz)
+                if (this == null || viewModel.playerShip?.driveType?.value != DriveType.WARP) {
+                    simpleDistance
+                } else {
+                    calculateAvoidanceRouteCost(
+                        sourceX,
+                        sourceZ,
+                        destX,
+                        destZ,
+                        simpleDistance
+                    )
+                }
+            } else {
+                Float.NaN
             }
 
-            val dx = destX - sourceX
-            val dz = destZ - sourceZ
-            val simpleDistance = sqrt(dx * dx + dz * dz)
-            return if (this == null || viewModel.playerShip?.driveType?.value != DriveType.WARP) {
-                simpleDistance
-            } else {
-                calculateAvoidanceRouteCost(
-                    sourceX,
-                    sourceZ,
-                    destX,
-                    destZ,
-                    simpleDistance
-                )
-            }
-        }
+        private fun allDefined(vararg coordinates: Float): Boolean = coordinates.none(Float::isNaN)
 
         /**
          * Generates a "route key" representing a path from one object to another, encapsulating
