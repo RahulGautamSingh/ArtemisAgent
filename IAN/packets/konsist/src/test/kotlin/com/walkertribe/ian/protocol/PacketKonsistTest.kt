@@ -3,8 +3,6 @@ package com.walkertribe.ian.protocol
 import com.lemonappdev.konsist.api.Konsist
 import com.lemonappdev.konsist.api.ext.list.withAnnotationOf
 import com.lemonappdev.konsist.api.ext.list.withNameEndingWith
-import com.lemonappdev.konsist.api.ext.list.withParent
-import com.lemonappdev.konsist.api.ext.list.withParentNamed
 import com.lemonappdev.konsist.api.ext.list.withParentOf
 import com.lemonappdev.konsist.api.ext.list.withRepresentedTypeOf
 import com.lemonappdev.konsist.api.ext.list.withTopLevel
@@ -12,6 +10,7 @@ import com.lemonappdev.konsist.api.ext.provider.hasAnnotationOf
 import com.lemonappdev.konsist.api.ext.provider.hasParentOf
 import com.lemonappdev.konsist.api.verify.assertFalse
 import com.lemonappdev.konsist.api.verify.assertTrue
+import com.walkertribe.ian.protocol.core.HeartbeatPacket
 import com.walkertribe.ian.protocol.core.SimpleEventPacket
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.datatest.withData
@@ -23,11 +22,11 @@ class PacketKonsistTest : DescribeSpec({
         val classes = module.classes() + module.objects()
         val protocol = "com.walkertribe.ian.protocol.."
         val classNameRegex = Regex("\\.[A-Z].+")
-        val parentNameRegex = Regex("Packet\\..+")
 
-        val packetClasses = module.classes().withTopLevel().withParent(indirectParents = true) {
-            it.hasNameMatching(parentNameRegex)
-        }
+        val packetClasses = module.classes()
+            .withTopLevel()
+            .withParentOf(Packet::class, indirectParents = true) +
+                module.interfaces().withRepresentedTypeOf(HeartbeatPacket::class)
 
         describe("Top-level packet class names end with Packet") {
             withData(packetClasses.map { it.name }) { it shouldEndWith "Packet" }
@@ -44,7 +43,7 @@ class PacketKonsistTest : DescribeSpec({
                 nameFn = {
                     classNameRegex.find(it.fullyQualifiedName)?.value?.substring(1) ?: it.name
                 },
-                classes.withParentNamed("Packet.Server")
+                classes.withParentOf(Packet.Server::class),
             ) { packetClass ->
                 packetClass.assertTrue { it.hasAnnotationOf<PacketType>() }
             }
@@ -55,7 +54,7 @@ class PacketKonsistTest : DescribeSpec({
                 nameFn = {
                     classNameRegex.find(it.fullyQualifiedName)?.value?.substring(1) ?: it.name
                 },
-                classes.withAnnotationOf(PacketType::class)
+                classes.withAnnotationOf(PacketType::class),
             ) { packetClass ->
                 packetClass.assertTrue { it.hasParentOf<Packet.Server>() }
             }
@@ -66,7 +65,7 @@ class PacketKonsistTest : DescribeSpec({
                 nameFn = {
                     classNameRegex.find(it.fullyQualifiedName)?.value?.substring(1) ?: it.name
                 },
-                packetClasses.withParentOf(SimpleEventPacket::class)
+                packetClasses.withParentOf(SimpleEventPacket::class),
             ) { packetClass ->
                 packetClass.assertTrue { it.hasAnnotationOf<PacketSubtype>() }
             }
@@ -85,12 +84,12 @@ class PacketKonsistTest : DescribeSpec({
             }
         }
 
-        describe("Client packets classes have neither @PacketType nor @PacketSubtype") {
+        describe("Client packet classes have neither @PacketType nor @PacketSubtype") {
             withData(
                 nameFn = {
                     classNameRegex.find(it.fullyQualifiedName)?.value?.substring(1) ?: it.name
                 },
-                classes.withParentNamed("Packet.Client", indirectParents = true),
+                classes.withParentOf(Packet.Client::class, indirectParents = true),
             ) { packetClass ->
                 packetClass.assertFalse {
                     it.hasAnnotationOf(PacketType::class, PacketSubtype::class)
