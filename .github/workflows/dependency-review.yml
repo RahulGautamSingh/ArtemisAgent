@@ -60,23 +60,3 @@ jobs:
         #   deny-licenses: GPL-1.0-or-later, LGPL-2.0-or-later
         #   retry-on-snapshot-warnings: true
 
-  dependency-auto-merge:
-    name: 'Auto merge (Dependabot PR)'
-    runs-on: ubuntu-latest
-    needs: [dependency-submission, dependency-review]
-    if: ${{ github.actor == 'dependabot[bot]' && github.event_name == 'pull_request' }}
-
-    steps:
-      - name: Fetch metadata
-        id: metadata
-        uses: dependabot/fetch-metadata@v2.2.0
-        with:
-          github-token: '${{ secrets.GITHUB_TOKEN }}'
-
-      - name: Enable auto-merge
-        id: auto-merge
-        run: gh pr merge --auto --merge "$PR_URL"
-        env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
