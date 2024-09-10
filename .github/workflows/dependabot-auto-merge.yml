@@ -1,7 +1,7 @@
 # Dependabot Auto Merge
 #
 # This Action will automatically merge Pull Requests created by Dependabot.
-name: 'Dependency review'
+name: 'Dependabot Auto Merge'
 on:
   pull_request:
     branches: [ "main" ]
