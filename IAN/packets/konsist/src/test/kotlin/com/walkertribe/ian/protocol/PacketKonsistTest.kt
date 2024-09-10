@@ -60,6 +60,29 @@ class PacketKonsistTest : DescribeSpec({
             }
         }
 
+        describe("@PacketType annotations use type from CorePacketType object") {
+            withData(
+                nameFn = {
+                    classNameRegex.find(it.fullyQualifiedName)?.value?.substring(1) ?: it.name
+                },
+                classes.withAnnotationOf(PacketType::class),
+            ) { packetClass ->
+                packetClass.annotations.withRepresentedTypeOf(PacketType::class).assertTrue {
+                    it.hasAllArguments { arg ->
+                        when {
+                            arg.name != "type" -> false
+                            arg.value.toString().startsWith("CorePacketType.") -> true
+                            else -> {
+                                it.containingFile.hasImport { imp ->
+                                    imp.name.endsWith("CorePacketType.${arg.value}")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         describe("SimpleEventPacket subclasses have @PacketSubtype annotation") {
             withData(
                 nameFn = {
@@ -80,6 +103,33 @@ class PacketKonsistTest : DescribeSpec({
             ) { packetClass ->
                 packetClass.assertTrue {
                     it.hasParentOf(SimpleEventPacket::class, indirectParents = true)
+                }
+            }
+        }
+
+        describe("@PacketSubtype annotations use subtype from SimpleEventPacket.Subtype object") {
+            withData(
+                nameFn = {
+                    classNameRegex.find(it.fullyQualifiedName)?.value?.substring(1) ?: it.name
+                },
+                classes.withAnnotationOf(PacketSubtype::class),
+            ) { packetClass ->
+                packetClass.annotations.withRepresentedTypeOf(PacketSubtype::class).assertTrue {
+                    it.hasAllArguments { arg ->
+                        when {
+                            arg.name != "subtype" -> false
+                            arg.value.toString().startsWith("SimpleEventPacket.Subtype.") -> true
+                            arg.value.toString().startsWith("Subtype.") -> {
+                                it.containingFile.hasImport { imp ->
+                                    imp.name.endsWith("SimpleEventPacket.Subtype")
+                                }
+                            }
+                            it.containingFile.hasImport { imp ->
+                                imp.name.endsWith("SimpleEventPacket.Subtype.${arg.value}")
+                            } -> true
+                            else -> false
+                        }
+                    }
                 }
             }
         }
