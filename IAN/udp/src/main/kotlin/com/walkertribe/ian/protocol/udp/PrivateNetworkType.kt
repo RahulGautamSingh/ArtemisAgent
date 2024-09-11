@@ -23,6 +23,10 @@ enum class PrivateNetworkType {
      */
     internal abstract val constraints: Array<ByteConstraint>
 
+    internal fun match(address: ByteArray): Boolean = address.run {
+        size == Int.SIZE_BYTES && zip(constraints).all { (byte, cons) -> cons.check(byte) }
+    }
+
     companion object {
         private val TWENTY_FOUR_BIT_CONSTRAINTS = arrayOf<ByteConstraint>(
             ByteConstraint.Equals(10),
@@ -43,14 +47,6 @@ enum class PrivateNetworkType {
          * not a private network address.
          */
         operator fun invoke(address: ByteArray): PrivateNetworkType? =
-            if (address.size != Int.SIZE_BYTES) {
-                null
-            } else {
-                entries.find {
-                    address.zip(it.constraints).all { (byte, constraint) ->
-                        constraint.check(byte)
-                    }
-                }
-            }
+            entries.find { it.match(address) }
     }
 }
