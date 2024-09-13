@@ -27,9 +27,21 @@ permissions:
   pull-requests: write
 
 jobs:
+  wait-for-build:
+    name: 'Wait for build to complete'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: lewagon/wait-on-check-action@v1.3.4
+        with:
+          ref: ${{ github.ref }}
+          check-name: 'Build with Gradle Wrapper'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          allowed-conclusions: success
+
   dependency-submission:
     name: 'Dependency submission'
     runs-on: ubuntu-latest
+    needs: wait-for-build
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
