@@ -33,7 +33,7 @@ jobs:
     steps:
       - uses: lewagon/wait-on-check-action@v1.3.4
         with:
-          ref: ${{ github.ref }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           check-name: 'Build with Gradle Wrapper'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           allowed-conclusions: success
