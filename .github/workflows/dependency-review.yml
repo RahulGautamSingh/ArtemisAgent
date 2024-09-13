@@ -37,6 +37,7 @@ jobs:
           check-name: 'Build with Gradle Wrapper'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           allowed-conclusions: success
+          wait-interval: 10
 
   dependency-submission:
     name: 'Dependency submission'
