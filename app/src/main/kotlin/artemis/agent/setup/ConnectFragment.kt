@@ -54,32 +54,41 @@ class ConnectFragment : Fragment(R.layout.connect_fragment) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.settingsPage.value = null
 
-        val serverListAdapter = GenericDataAdapter {
-            playSoundsOnTextChange = false
-            binding.addressBar.setText(it.data)
-            viewModel.connectToServer()
-        }
-        binding.serverList.apply {
-            itemAnimator = null
-            adapter = serverListAdapter
-        }
-
         binding.root.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 hideKeyboard()
             }
         }
 
-        val scanButton = binding.scanButton
-        val scanSpinner = binding.scanSpinner
-        val noServersLabel = binding.noServersLabel
+        prepareConnectionSection()
+        prepareScanningSection()
 
-        scanButton.setOnClickListener {
-            viewModel.playSound(SoundEffect.BEEP_2)
-            hideKeyboard()
-            viewModel.scanForServers()
+        viewLifecycleOwner.collectLatestWhileStarted(view.context.userSettings.data) {
+            recentAdapter.servers = it.recentServersList.apply {
+                var addressText = firstOrNull() ?: ""
+                if (viewModel.connectedUrl.value.isBlank()) {
+                    viewModel.addressBarText.also { text ->
+                        if (text.isNotBlank()) {
+                            addressText = text
+                        }
+                    }
+                }
+                playSoundsOnTextChange = false
+                binding.addressBar.setText(addressText)
+            }
         }
+    }
 
+    override fun onPause() {
+        val addressBar = binding.addressBar
+        viewModel.addressBarText = addressBar.text.toString()
+        addressBar.clearFocus()
+        hideKeyboard()
+
+        super.onPause()
+    }
+
+    private fun prepareConnectionSection() {
         binding.connectButton.setOnClickListener {
             hideKeyboard()
             viewModel.connectToServer()
@@ -113,21 +122,6 @@ class ConnectFragment : Fragment(R.layout.connect_fragment) {
             }
         }
 
-        viewLifecycleOwner.collectLatestWhileStarted(view.context.userSettings.data) {
-            recentAdapter.servers = it.recentServersList.apply {
-                var addressText = firstOrNull() ?: ""
-                if (viewModel.connectedUrl.value.isBlank()) {
-                    viewModel.addressBarText.also { text ->
-                        if (text.isNotBlank()) {
-                            addressText = text
-                        }
-                    }
-                }
-                playSoundsOnTextChange = false
-                addressBar.setText(addressText)
-            }
-        }
-
         addressBar.addTextChangedListener {
             if (playSoundsOnTextChange) {
                 viewModel.playSound(SoundEffect.BEEP_2)
@@ -136,6 +130,28 @@ class ConnectFragment : Fragment(R.layout.connect_fragment) {
             }
 
             binding.connectButton.isEnabled = !it.isNullOrBlank()
+        }
+    }
+
+    private fun prepareScanningSection() {
+        val serverListAdapter = GenericDataAdapter {
+            playSoundsOnTextChange = false
+            binding.addressBar.setText(it.data)
+            viewModel.connectToServer()
+        }
+        binding.serverList.apply {
+            itemAnimator = null
+            adapter = serverListAdapter
+        }
+
+        val scanButton = binding.scanButton
+        val scanSpinner = binding.scanSpinner
+        val noServersLabel = binding.noServersLabel
+
+        scanButton.setOnClickListener {
+            viewModel.playSound(SoundEffect.BEEP_2)
+            hideKeyboard()
+            viewModel.scanForServers()
         }
 
         viewLifecycleOwner.collectLatestWhileStarted(viewModel.discoveredServers) {
@@ -147,7 +163,7 @@ class ConnectFragment : Fragment(R.layout.connect_fragment) {
         viewLifecycleOwner.collectLatestWhileStarted(viewModel.isScanningUDP) {
             scanButton.isEnabled = !it
             if (it) {
-                addressBar.clearFocus()
+                binding.addressBar.clearFocus()
                 scanSpinner.visibility = View.VISIBLE
                 noServersLabel.visibility = View.GONE
             } else {
@@ -164,15 +180,6 @@ class ConnectFragment : Fragment(R.layout.connect_fragment) {
             }
             playSoundOnScanFinished = true
         }
-    }
-
-    override fun onPause() {
-        val addressBar = binding.addressBar
-        viewModel.addressBarText = addressBar.text.toString()
-        addressBar.clearFocus()
-        hideKeyboard()
-
-        super.onPause()
     }
 
     private fun hideKeyboard() {

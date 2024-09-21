@@ -7,7 +7,6 @@
     <ID>CyclomaticComplexMethod:CPU.kt$CPU$private fun parseMissionProgress(packet: CommsIncomingPacket): Boolean</ID>
     <ID>CyclomaticComplexMethod:CPU.kt$CPU$private fun parseNewMission(packet: CommsIncomingPacket): Boolean</ID>
     <ID>CyclomaticComplexMethod:CPU.kt$CPU$private fun processMissionProgress( source: String, destination: String, shipName: String )</ID>
-    <ID>CyclomaticComplexMethod:ConnectFragment.kt$ConnectFragment$override fun onViewCreated(view: View, savedInstanceState: Bundle?)</ID>
     <ID>CyclomaticComplexMethod:EnemySettingsFragment.kt$EnemySettingsFragment$override fun onViewCreated(view: View, savedInstanceState: Bundle?)</ID>
     <ID>CyclomaticComplexMethod:GameFragment.kt$GameFragment$override fun onViewCreated(view: View, savedInstanceState: Bundle?)</ID>
     <ID>CyclomaticComplexMethod:MainActivity.kt$MainActivity$override fun onCreate(savedInstanceState: Bundle?)</ID>
@@ -25,7 +24,6 @@
     <ID>LongMethod:BiomechSettingsFragment.kt$BiomechSettingsFragment$override fun onViewCreated(view: View, savedInstanceState: Bundle?)</ID>
     <ID>LongMethod:CPU.kt$CPU$@Listener fun onPlayerUpdate(update: ArtemisPlayer)</ID>
     <ID>LongMethod:ClientSettingsFragment.kt$ClientSettingsFragment$override fun onViewCreated(view: View, savedInstanceState: Bundle?)</ID>
-    <ID>LongMethod:ConnectFragment.kt$ConnectFragment$override fun onViewCreated(view: View, savedInstanceState: Bundle?)</ID>
     <ID>LongMethod:EnemySettingsFragment.kt$EnemySettingsFragment$override fun onViewCreated(view: View, savedInstanceState: Bundle?)</ID>
     <ID>LongMethod:GameFragment.kt$GameFragment$override fun onViewCreated(view: View, savedInstanceState: Bundle?)</ID>
     <ID>LongMethod:MainActivity.kt$MainActivity$override fun onCreate(savedInstanceState: Bundle?)</ID>
