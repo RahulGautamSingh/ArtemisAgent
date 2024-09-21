@@ -126,56 +126,44 @@ class KtorArtemisNetworkInterface(
     override fun start() {
         if (startTime == null && disconnectCause == null) {
             startTime = Clock.System.now().toEpochMilliseconds()
-            startSending()
-            startReceiving()
-            startConnectionListeners()
-            startParseResultListeners()
-        }
-    }
 
-    private fun startReceiving() {
-        receiveJob = launch(receiveExceptionHandler) {
-            while (isRunning) {
-                // read packet
-                val result = reader.readPacket()
+            sendJob = launch(sendExceptionHandler) {
+                while (isRunning && isActive) {
+                    sendingChannel.tryReceive().onSuccess { packet ->
+                        packet.writeTo(writer)
+                        writer.flush()
+                    }
 
-                if (result is ParseResult.Fail) {
-                    throw result.exception
+                    heartbeatManager.sendHeartbeatIfNeeded()
                 }
-
-                // Enqueue to the event dispatch thread
-                parseResultsChannel.send(result)
             }
-        }
-    }
 
-    private fun startSending() {
-        sendJob = launch(sendExceptionHandler) {
-            while (isRunning && isActive) {
-                sendingChannel.tryReceive().onSuccess { packet ->
-                    packet.writeTo(writer)
-                    writer.flush()
+            receiveJob = launch(receiveExceptionHandler) {
+                while (isRunning) {
+                    // read packet
+                    val result = reader.readPacket()
+
+                    if (result is ParseResult.Fail) {
+                        throw result.exception
+                    }
+
+                    // Enqueue to the event dispatch thread
+                    parseResultsChannel.send(result)
                 }
-
-                heartbeatManager.sendHeartbeatIfNeeded()
             }
-        }
-    }
 
-    private fun startParseResultListeners() {
-        parseResultDispatchJob = launch {
-            while (isRunning) {
-                parseResultsChannel.receive().fireListeners()
+            connectionListenerJob = launch {
+                while (isRunning && isActive) {
+                    connectionEventChannel.tryReceive().onSuccess(listeners::offer)
+
+                    heartbeatManager.checkForHeartbeat()
+                }
             }
-        }
-    }
 
-    private fun startConnectionListeners() {
-        connectionListenerJob = launch {
-            while (isRunning && isActive) {
-                connectionEventChannel.tryReceive().onSuccess(listeners::offer)
-
-                heartbeatManager.checkForHeartbeat()
+            parseResultDispatchJob = launch {
+                while (isRunning) {
+                    parseResultsChannel.receive().fireListeners()
+                }
             }
         }
     }
@@ -239,12 +227,12 @@ class KtorArtemisNetworkInterface(
                 }
             }
         } catch (_: TimeoutCancellationException) {
-            return false
+            null
         } catch (_: IllegalArgumentException) {
-            return false
+            null
         } catch (_: IOException) {
-            return false
-        }
+            null
+        } ?: return false
 
         reader = PacketReader(socket.openReadChannel(), listeners)
         writer = PacketWriter(socket.openWriteChannel())
