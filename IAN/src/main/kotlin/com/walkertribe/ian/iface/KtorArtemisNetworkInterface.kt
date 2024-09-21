@@ -24,15 +24,17 @@ import kotlinx.coroutines.withTimeout
 import kotlinx.datetime.Clock
 
 /**
- * Default implementation of ArtemisNetworkInterface. Kicks off three threads:
- *  * The **receiver thread**, which reads and parses packets from the input
- * stream.
+ * Default implementation of [ArtemisNetworkInterface] that uses Ktor. When started, it launches
+ * four coroutines:
+ *  * The **connection listener coroutine**, which listens for changes to the connection and
+ *  heartbeats.
  *
- *  * The **event dispatch thread**, which fires listeners to respond to
- * incoming packets, object updates, or events.
+ *  * The **receiver coroutine**, which reads and parses packets from the input stream.
  *
- *  * The **sender thread**, which writes outgoing packets to the output
- * stream.
+ *  * The **parse result dispatch coroutine**, which fires listeners to respond to incoming packets
+ *  and object updates.
+ *
+ *  * The **sender coroutine**, which writes outgoing packets to the output stream.
  */
 class KtorArtemisNetworkInterface(
     override val debugMode: Boolean,
