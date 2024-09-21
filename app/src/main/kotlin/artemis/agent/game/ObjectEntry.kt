@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import androidx.annotation.ColorInt
 import androidx.annotation.PluralsRes
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import artemis.agent.AgentViewModel
 import artemis.agent.R
@@ -24,7 +25,7 @@ sealed class ObjectEntry<Obj : ArtemisShielded<Obj>>(
     class Ally(
         npc: ArtemisNpc,
         val vesselName: String,
-        val isDeepStrikeShip: Boolean
+        private val isDeepStrikeShip: Boolean
     ) : ObjectEntry<ArtemisNpc>(npc, R.plurals.side_missions_for_ally) {
         var status: AllyStatus = AllyStatus.NORMAL
             set(value) {
@@ -80,7 +81,7 @@ sealed class ObjectEntry<Obj : ArtemisShielded<Obj>>(
         var isDocked: Boolean = false
         var isStandingBy: Boolean = false
         var speedFactor: Int = 1
-        val normalProductionCoefficient: Int = station.getVessel(vesselData)?.run {
+        private val normalProductionCoefficient: Int = station.getVessel(vesselData)?.run {
             (productionCoefficient * 2).toInt()
         } ?: 2
         var builtOrdnanceType: OrdnanceType = OrdnanceType.TORPEDO
@@ -187,11 +188,12 @@ sealed class ObjectEntry<Obj : ArtemisShielded<Obj>>(
             fighters
         )
 
-        fun getStatusText(context: Context): String = when {
-            isDocked -> context.getString(R.string.docked)
-            isDocking -> context.getString(R.string.docking)
-            isStandingBy -> context.getString(R.string.standby)
-            else -> ""
+        @get:StringRes
+        val statusString: Int? get() = when {
+            isDocked -> R.string.docked
+            isDocking -> R.string.docking
+            isStandingBy -> R.string.standby
+            else -> null
         }
 
         fun getOrdnanceText(

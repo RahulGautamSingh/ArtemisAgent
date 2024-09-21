@@ -295,7 +295,7 @@ class StationEntryFragment : Fragment(R.layout.station_entry) {
             shields.coerceAtLeast(0f),
             shieldsMax
         )
-        stationStatusLabel.text = entry.getStatusText(context)
+        stationStatusLabel.text = entry.statusString?.let(context::getString).orEmpty()
         stationSpeedLabel.text = entry.getSpeedText(context)
 
         stationHeadingLabel.text = context.getString(R.string.direction, entry.heading)
