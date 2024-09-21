@@ -52,9 +52,7 @@ class AllySettingsFragment : Fragment(R.layout.settings_allies) {
         prepareOtherSettingButtons()
     }
 
-    private fun prepareAllySortMethodButtons(
-        allySortMethodButtons: Map<ToggleButton, KMutableProperty1<UserSettingsKt.Dsl, Boolean>>,
-    ) {
+    private fun prepareAllySortMethodButtons(allySortMethodButtons: ToggleButtonMap) {
         val context = binding.root.context
 
         allySortMethodButtons.keys.forEach { button ->
@@ -119,9 +117,7 @@ class AllySettingsFragment : Fragment(R.layout.settings_allies) {
         }
     }
 
-    private fun prepareDefaultSortMethodButton(
-        allySortMethodButtons: Map<ToggleButton, KMutableProperty1<UserSettingsKt.Dsl, Boolean>>,
-    ) {
+    private fun prepareDefaultSortMethodButton(allySortMethodButtons: ToggleButtonMap) {
         binding.allySortingDefaultButton.setOnClickListener {
             viewModel.playSound(SoundEffect.BEEP_2)
         }

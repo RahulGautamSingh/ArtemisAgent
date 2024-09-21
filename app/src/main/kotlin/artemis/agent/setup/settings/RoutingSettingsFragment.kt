@@ -87,7 +87,7 @@ class RoutingSettingsFragment : Fragment(R.layout.settings_routing) {
     }
 
     private fun initializeFromSettings(
-        incentiveButtons: Map<ToggleButton, KMutableProperty1<UserSettingsKt.Dsl, Boolean>>,
+        incentiveButtons: ToggleButtonMap,
         avoidances: Array<Avoidance>,
     ) {
         viewLifecycleOwner.collectLatestWhileStarted(binding.root.context.userSettings.data) {
@@ -211,9 +211,7 @@ class RoutingSettingsFragment : Fragment(R.layout.settings_routing) {
         }
     }
 
-    private fun prepareIncentiveSettingButtons(
-        incentiveButtons: Map<ToggleButton, KMutableProperty1<UserSettingsKt.Dsl, Boolean>>,
-    ) {
+    private fun prepareIncentiveSettingButtons(incentiveButtons: ToggleButtonMap) {
         val context = binding.root.context
 
         binding.incentivesAllButton.setOnClickListener {

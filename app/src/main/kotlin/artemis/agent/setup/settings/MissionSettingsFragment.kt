@@ -85,9 +85,7 @@ class MissionSettingsFragment : Fragment(R.layout.settings_missions) {
         prepareRewardSettingButtons(displayRewardButtons)
     }
 
-    private fun prepareRewardSettingButtons(
-        displayRewardButtons: Map<ToggleButton, KMutableProperty1<UserSettingsKt.Dsl, Boolean>>,
-    ) {
+    private fun prepareRewardSettingButtons(displayRewardButtons: ToggleButtonMap) {
         val context = binding.root.context
 
         binding.rewardsAllButton.setOnClickListener {

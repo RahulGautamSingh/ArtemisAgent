@@ -67,9 +67,7 @@ class BiomechSettingsFragment : Fragment(R.layout.settings_biomechs) {
         freezeDurationBinder.destroy()
     }
 
-    private fun prepareSortMethodButtons(
-        biomechSortMethodButtons: Map<ToggleButton, KMutableProperty1<UserSettingsKt.Dsl, Boolean>>,
-    ) {
+    private fun prepareSortMethodButtons(biomechSortMethodButtons: ToggleButtonMap) {
         val context = binding.root.context
 
         biomechSortMethodButtons.keys.forEach { button ->
@@ -119,9 +117,7 @@ class BiomechSettingsFragment : Fragment(R.layout.settings_biomechs) {
         }
     }
 
-    private fun prepareDefaultSortMethodButton(
-        biomechSortMethodButtons: Map<ToggleButton, KMutableProperty1<UserSettingsKt.Dsl, Boolean>>,
-    ) {
+    private fun prepareDefaultSortMethodButton(biomechSortMethodButtons: ToggleButtonMap) {
         binding.biomechSortingDefaultButton.setOnClickListener {
             viewModel.playSound(SoundEffect.BEEP_2)
         }
