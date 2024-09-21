@@ -38,7 +38,7 @@ sealed class ActivateUpgradePacketFixture private constructor(
         "Old packet version: 2.3.1 and older",
         ActivateUpgradePacket.Old,
         ValueIntPacket.Subtype.ACTIVATE_UPGRADE_OLD,
-        Exhaustive.of(0, 1).map { Version(2, 3, it) },
+        Exhaustive.of(0, 1).map { Version(major = 2, minor = 3, patch = it) },
     )
 
     data object Current : ActivateUpgradePacketFixture(
