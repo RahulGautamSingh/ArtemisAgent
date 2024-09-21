@@ -24,6 +24,7 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 import io.kotest.property.Arb
 import io.kotest.property.Exhaustive
 import io.kotest.property.Gen
+import io.kotest.property.PropertyTesting
 import io.kotest.property.arbitrary.bind
 import io.kotest.property.arbitrary.choose
 import io.kotest.property.arbitrary.enum
@@ -125,20 +126,8 @@ sealed class CommsOutgoingPacketFixture private constructor(
     data object Other : CommsOutgoingPacketFixture(
         Arb.bind<ArtemisNpc>(),
         Arb.choose(
-            11 to Arb.of(
-                OtherMessage.Hail,
-                OtherMessage.TurnToHeading0,
-                OtherMessage.TurnToHeading90,
-                OtherMessage.TurnToHeading180,
-                OtherMessage.TurnToHeading270,
-                OtherMessage.TurnLeft10Degrees,
-                OtherMessage.TurnRight10Degrees,
-                OtherMessage.TurnLeft25Degrees,
-                OtherMessage.TurnRight25Degrees,
-                OtherMessage.AttackNearestEnemy,
-                OtherMessage.ProceedToYourDestination,
-            ),
-            989 to Arb.bind<OtherMessage.GoDefend>(),
+            otherMessageObjects.size to Arb.of(otherMessageObjects),
+            goDefendCount to Arb.bind<OtherMessage.GoDefend>(),
         ),
         Arb.vesselData(factions = TestFaction.entries.filterNot { it.isEnemy }),
         CommsRecipientType.OTHER,
@@ -158,6 +147,21 @@ sealed class CommsOutgoingPacketFixture private constructor(
         private const val PAYLOAD_SIZE = Int.SIZE_BYTES * 5
         private const val UNKNOWN_ARG = 0x00730078
         private const val UNKNOWN_ARG_2 = 0x004f005e
+
+        private val otherMessageObjects = listOf(
+            OtherMessage.Hail,
+            OtherMessage.TurnToHeading0,
+            OtherMessage.TurnToHeading90,
+            OtherMessage.TurnToHeading180,
+            OtherMessage.TurnToHeading270,
+            OtherMessage.TurnLeft10Degrees,
+            OtherMessage.TurnRight10Degrees,
+            OtherMessage.TurnLeft25Degrees,
+            OtherMessage.TurnRight25Degrees,
+            OtherMessage.AttackNearestEnemy,
+            OtherMessage.ProceedToYourDestination,
+        )
+        private val goDefendCount = PropertyTesting.defaultIterationCount - otherMessageObjects.size
 
         val ALL = listOf(Enemy, EnemyVessel, Base, Other)
     }
