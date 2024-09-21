@@ -140,23 +140,17 @@ class NotificationManager(context: Context) {
 
         val index = when (channelId) {
             CHANNEL_ATTACK -> {
-                attackedStations[title] ?: attackedStations.size.also {
-                    attackedStations[title] = it
-                }
+                attackedStations.getOrPut(title) { attackedStations.size }
             }
             CHANNEL_REANIMATE -> {
-                biomechs[title] ?: biomechs.size.also {
-                    biomechs[title] = it
-                }
+                biomechs.getOrPut(title) { biomechs.size }
             }
             CHANNEL_DESTROYED -> destroyedStations++
             CHANNEL_NEW_MISSION -> newMissionMessages++
             CHANNEL_MISSION_PROGRESS -> progressMessages++
             CHANNEL_MISSION_COMPLETED -> completionMessages++
             CHANNEL_PRODUCTION -> {
-                val stationIndex = production[title] ?: production.size.also {
-                    production[title] = it
-                }
+                val stationIndex = production.getOrPut(title) { production.size }
                 val ordnanceName = message.substring(ORDNANCE_NAME_INDEX, message.indexOf('.'))
                 val ordnanceType = OrdnanceType.entries.find { it.hasLabel(ordnanceName) }
                 stationIndex * ORDNANCE_SIZE + (ordnanceType?.ordinal ?: 0)

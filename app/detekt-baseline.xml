@@ -9,7 +9,6 @@
     <ID>CyclomaticComplexMethod:CPU.kt$CPU$private fun processMissionProgress( source: String, destination: String, shipName: String )</ID>
     <ID>CyclomaticComplexMethod:GameFragment.kt$GameFragment$override fun onViewCreated(view: View, savedInstanceState: Bundle?)</ID>
     <ID>CyclomaticComplexMethod:MainActivity.kt$MainActivity$override fun onCreate(savedInstanceState: Bundle?)</ID>
-    <ID>CyclomaticComplexMethod:NotificationManager.kt$NotificationManager$fun createNotification( builder: NotificationCompat.Builder, channelId: String, title: String, message: String, context: Context, )</ID>
     <ID>CyclomaticComplexMethod:RoutingGraph.kt$RoutingGraph$fun preprocessObjectsToAvoid()</ID>
     <ID>CyclomaticComplexMethod:RoutingGraph.kt$RoutingGraph$private fun calculateAvoidanceRouteCost( sourceX: Float, sourceZ: Float, destX: Float, destZ: Float, simpleDistance: Float, maxCost: Float = Float.POSITIVE_INFINITY ): Float</ID>
     <ID>CyclomaticComplexMethod:RoutingGraph.kt$RoutingGraph$suspend fun searchForRoute(): List&lt;RouteEntry&gt;?</ID>
