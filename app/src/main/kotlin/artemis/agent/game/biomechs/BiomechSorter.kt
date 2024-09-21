@@ -1,23 +1,17 @@
 package artemis.agent.game.biomechs
 
+import artemis.agent.game.buildSortingComparator
+
 data class BiomechSorter(
     val sortByClassFirst: Boolean = false,
     val sortByStatus: Boolean = false,
     val sortByClassSecond: Boolean = false,
     val sortByName: Boolean = false,
-) : Comparator<BiomechEntry> by (
-    listOfNotNull(
-        CLASS_COMPARATOR.takeIf { sortByClassFirst },
-        STATUS_COMPARATOR.takeIf { sortByStatus },
-        CLASS_COMPARATOR.takeIf { sortByClassSecond },
-        NAME_COMPARATOR.takeIf { sortByName },
-    ).let { comparators ->
-        Comparator { b1, b2 ->
-            comparators.firstNotNullOfOrNull { comparator ->
-                comparator.compare(b1, b2).takeIf { it != 0 }
-            } ?: 0
-        }
-    }
+) : Comparator<BiomechEntry> by buildSortingComparator(
+    CLASS_COMPARATOR to sortByClassFirst,
+    STATUS_COMPARATOR to sortByStatus,
+    CLASS_COMPARATOR to sortByClassSecond,
+    NAME_COMPARATOR to sortByName,
 ) {
     private companion object {
         val CLASS_COMPARATOR: Comparator<BiomechEntry> = compareByDescending {
