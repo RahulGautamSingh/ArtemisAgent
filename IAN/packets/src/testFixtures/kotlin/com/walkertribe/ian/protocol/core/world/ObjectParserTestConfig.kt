@@ -42,6 +42,7 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 import io.kotest.property.Arb
 import io.kotest.property.Exhaustive
 import io.kotest.property.Gen
+import io.kotest.property.PropertyTesting
 import io.kotest.property.arbitrary.bind
 import io.kotest.property.arbitrary.byte
 import io.kotest.property.arbitrary.choose
@@ -280,6 +281,8 @@ sealed class ObjectParserTestConfig(val recognizesObjectListeners: Boolean) {
             private val UNK_3_1 = Arb.byte()
             private val UNK_3_2 = Arb.int()
 
+            private const val CREATURE_TYPE_BIT = 0x80
+
             private fun arbData(
                 arbVersion: Arb<Version>,
                 arbCreatureType: Arb<Int>,
@@ -314,7 +317,7 @@ sealed class ObjectParserTestConfig(val recognizesObjectListeners: Boolean) {
 
             override fun BytePacketBuilder.buildObject() {
                 var flagByte1 = flags1.byteValue.toInt()
-                if (forceCreatureType) flagByte1 = flagByte1 or 0x80
+                if (forceCreatureType) flagByte1 = flagByte1 or CREATURE_TYPE_BIT
                 writeByte(flagByte1.toByte())
 
                 arrayOf(flags2, flags3).forEach {
@@ -371,8 +374,15 @@ sealed class ObjectParserTestConfig(val recognizesObjectListeners: Boolean) {
             }
         }
 
-        data object V1 : CreatureParser("Before 2.6.0", Arb.version(2, 3..5))
-        data object V2 : CreatureParser("Since 2.6.0", Arb.version(2, Arb.int(min = 6)))
+        data object V1 : CreatureParser(
+            "Before 2.6.0",
+            Arb.version(major = 2, minorRange = 3..5),
+        )
+
+        data object V2 : CreatureParser(
+            "Since 2.6.0",
+            Arb.version(major = 2, minorArb = Arb.int(min = 6)),
+        )
 
         override val parserName: String = "Creature"
         override val dataGenerator: Gen<Data> = arbData(versionArb, Arb.of(0), Arb.of(false))
@@ -684,8 +694,8 @@ sealed class ObjectParserTestConfig(val recognizesObjectListeners: Boolean) {
             override val dataGenerator: Gen<Data> = Arb.bind(
                 ID,
                 Arb.choose(
-                    3 to Arb.version(2, 6, 0..2),
-                    997 to Arb.version(2, 3..5),
+                    3 to Arb.version(major = 2, minor = 6, patchRange = 0..2),
+                    997 to Arb.version(major = 2, minorRange = 3..5),
                 ),
                 Arb.flags(NAME, IMPULSE, UNK_1_3, UNK_1_4, UNK_1_5, IS_ENEMY, HULL_ID, X),
                 Arb.flags(Y, Z, UNK_2_3, UNK_2_4, UNK_2_5, UNK_2_6, SURRENDERED, IN_NEBULA_OLD),
@@ -747,7 +757,7 @@ sealed class ObjectParserTestConfig(val recognizesObjectListeners: Boolean) {
 
             override val dataGenerator: Gen<Data> = Arb.bind(
                 ID,
-                Arb.version(2, 6, Arb.int(min = 3)),
+                Arb.version(major = 2, minor = 6, patchArb = Arb.int(min = 3)),
                 Arb.flags(NAME, IMPULSE, UNK_1_3, UNK_1_4, UNK_1_5, IS_ENEMY, HULL_ID, X),
                 Arb.flags(Y, Z, UNK_2_3, UNK_2_4, UNK_2_5, UNK_2_6, SURRENDERED, IN_NEBULA_OLD),
                 Arb.flags(FRONT, FRONT_MAX, REAR, REAR_MAX, UNK_3_5, UNK_3_6, UNK_3_7, UNK_3_8),
@@ -1152,22 +1162,22 @@ sealed class ObjectParserTestConfig(val recognizesObjectListeners: Boolean) {
 
         data object V1 : PlayerShipParser(
             "Before 2.4.0",
-            Arb.version(2, 3),
+            Arb.version(major = 2, minor = 3),
         )
         data object V2 : PlayerShipParser(
             "From 2.4.0 until 2.6.3",
             Arb.choose(
-                3 to Arb.version(2, 6, 0..2),
-                997 to Arb.version(2, 4..5),
+                3 to Arb.version(major = 2, minor = 6, patchRange = 0..2),
+                997 to Arb.version(major = 2, minorRange = 4..5),
             ),
         )
         data object V3 : PlayerShipParser(
             "From 2.6.3 until 2.7.0",
-            Arb.version(2, 6, Arb.int(min = 3)),
+            Arb.version(major = 2, minor = 6, patchArb = Arb.int(min = 3)),
         )
         data object V4 : PlayerShipParser(
             "Since 2.7.0",
-            Arb.version(2, Arb.int(min = 7)),
+            Arb.version(major = 2, minorArb = Arb.int(min = 7)),
         ) {
             override val dataGenerator: Gen<Data> = Arb.bind(
                 ID,
@@ -1438,8 +1448,8 @@ sealed class ObjectParserTestConfig(val recognizesObjectListeners: Boolean) {
             override val dataGenerator: Gen<Data> = Arb.bind(
                 ID,
                 Arb.choose(
-                    3 to Arb.version(2, 6, 0..2),
-                    997 to Arb.version(2, 3..5),
+                    3 to Arb.version(major = 2, minor = 6, patchRange = 0..2),
+                    997 to Arb.version(major = 2, minorRange = 3..5),
                 ),
                 Arb.flags(COUNT, COUNT, COUNT, COUNT, COUNT, UNKNOWN, TIME, TIME),
                 Arb.flags(TIME, TIME, TIME, TIME, STATUS, STATUS, STATUS, STATUS),
@@ -1510,8 +1520,10 @@ sealed class ObjectParserTestConfig(val recognizesObjectListeners: Boolean) {
             override val dataGenerator: Gen<Data> = Arb.bind(
                 ID,
                 Arb.choose(
-                    1 to Arb.version(2, 6, Arb.int(min = 3)),
-                    999 to Arb.version(2, Arb.int(min = 7)),
+                    1 to
+                        Arb.version(major = 2, minor = 6, patchArb = Arb.int(min = 3)),
+                    PropertyTesting.defaultIterationCount - 1 to
+                        Arb.version(major = 2, minorArb = Arb.int(min = 7)),
                 ),
                 Arb.flags(COUNT, COUNT, COUNT, COUNT, COUNT, COUNT, COUNT, COUNT),
                 Arb.flags(TIME, TIME, TIME, TIME, TIME, TIME, STATUS, STATUS),
@@ -1631,16 +1643,18 @@ sealed class ObjectParserTestConfig(val recognizesObjectListeners: Boolean) {
             data object V1 : Anomaly(
                 "Before 2.6.3",
                 Arb.choose(
-                    3 to Arb.version(2, 6, 0..2),
-                    997 to Arb.version(2, 3..5),
+                    3 to Arb.version(major = 2, minor = 6, patchRange = 0..2),
+                    997 to Arb.version(major = 2, minorRange = 3..5),
                 ),
             )
 
             data object V2 : Anomaly(
                 "Since 2.6.3",
                 Arb.choose(
-                    1 to Arb.version(2, 6, Arb.int(min = 3)),
-                    999 to Arb.version(2, Arb.int(min = 7)),
+                    1 to
+                        Arb.version(major = 2, minor = 6, patchArb = Arb.int(min = 3)),
+                    PropertyTesting.defaultIterationCount - 1 to
+                        Arb.version(major = 2, minorArb = Arb.int(min = 7)),
                 ),
             )
 
@@ -1689,8 +1703,15 @@ sealed class ObjectParserTestConfig(val recognizesObjectListeners: Boolean) {
                 }
             }
 
-            data object V1 : Nebula("Before 2.7.0", Arb.version(2, 3..6))
-            data object V2 : Nebula("Since 2.7.0", Arb.version(2, Arb.int(min = 7)))
+            data object V1 : Nebula(
+                "Before 2.7.0",
+                Arb.version(major = 2, minorRange = 3..6),
+            )
+
+            data object V2 : Nebula(
+                "Since 2.7.0",
+                Arb.version(major = 2, minorArb = Arb.int(min = 7)),
+            )
 
             override val parserName: String = "Nebula"
             override val dataGenerator: Gen<Data> = Arb.bind(
@@ -1822,8 +1843,15 @@ sealed class ObjectParserTestConfig(val recognizesObjectListeners: Boolean) {
                 }
             }
 
-            data object V1 : GenericMesh("Before 2.7.0", Arb.version(2, 3..6))
-            data object V2 : GenericMesh("Since 2.7.0", Arb.version(2, Arb.int(min = 7)))
+            data object V1 : GenericMesh(
+                "Before 2.7.0",
+                Arb.version(major = 2, minorRange = 3..6),
+            )
+
+            data object V2 : GenericMesh(
+                "Since 2.7.0",
+                Arb.version(major = 2, minorArb = Arb.int(min = 7)),
+            )
 
             override val parserName: String = "Generic mesh"
             override val dataGenerator: Gen<Data> = Arb.bind(
