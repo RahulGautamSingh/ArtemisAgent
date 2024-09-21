@@ -3,8 +3,6 @@
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
     <ID>CyclomaticComplexMethod:AgentViewModel.kt$AgentViewModel$private suspend fun updateObjects()</ID>
-    <ID>CyclomaticComplexMethod:AlliesFragment.kt$AlliesFragment$override fun onViewCreated(view: View, savedInstanceState: Bundle?)</ID>
-    <ID>CyclomaticComplexMethod:AlliesFragment.kt$AlliesFragment.AllyInfoBinder$fun bind(entry: Ally, viewModel: AgentViewModel)</ID>
     <ID>CyclomaticComplexMethod:CPU.kt$CPU$@Listener fun onPlayerUpdate(update: ArtemisPlayer)</ID>
     <ID>CyclomaticComplexMethod:CPU.kt$CPU$private fun parseMissionProgress(packet: CommsIncomingPacket): Boolean</ID>
     <ID>CyclomaticComplexMethod:CPU.kt$CPU$private fun parseNewMission(packet: CommsIncomingPacket): Boolean</ID>
@@ -23,8 +21,6 @@
     <ID>LongMethod:AgentViewModel.kt$AgentViewModel$fun revertSettings(settings: UserSettings): UserSettings</ID>
     <ID>LongMethod:AgentViewModel.kt$AgentViewModel$fun updateFromSettings(settings: UserSettings)</ID>
     <ID>LongMethod:AgentViewModel.kt$AgentViewModel$private suspend fun updateObjects()</ID>
-    <ID>LongMethod:AlliesFragment.kt$AlliesFragment$override fun onViewCreated(view: View, savedInstanceState: Bundle?)</ID>
-    <ID>LongMethod:AlliesFragment.kt$AlliesFragment.AllyInfoBinder$fun bind(entry: Ally, viewModel: AgentViewModel)</ID>
     <ID>LongMethod:AllySettingsFragment.kt$AllySettingsFragment$override fun onViewCreated(view: View, savedInstanceState: Bundle?)</ID>
     <ID>LongMethod:BiomechSettingsFragment.kt$BiomechSettingsFragment$override fun onViewCreated(view: View, savedInstanceState: Bundle?)</ID>
     <ID>LongMethod:CPU.kt$CPU$@Listener fun onPlayerUpdate(update: ArtemisPlayer)</ID>
