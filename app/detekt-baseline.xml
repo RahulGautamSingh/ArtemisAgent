@@ -19,7 +19,6 @@
     <ID>LongMethod:AgentViewModel.kt$AgentViewModel$fun revertSettings(settings: UserSettings): UserSettings</ID>
     <ID>LongMethod:AgentViewModel.kt$AgentViewModel$fun updateFromSettings(settings: UserSettings)</ID>
     <ID>LongMethod:AgentViewModel.kt$AgentViewModel$private suspend fun updateObjects()</ID>
-    <ID>LongMethod:BiomechSettingsFragment.kt$BiomechSettingsFragment$override fun onViewCreated(view: View, savedInstanceState: Bundle?)</ID>
     <ID>LongMethod:CPU.kt$CPU$@Listener fun onPlayerUpdate(update: ArtemisPlayer)</ID>
     <ID>LongMethod:ClientSettingsFragment.kt$ClientSettingsFragment$override fun onViewCreated(view: View, savedInstanceState: Bundle?)</ID>
     <ID>LongMethod:EnemySettingsFragment.kt$EnemySettingsFragment$override fun onViewCreated(view: View, savedInstanceState: Bundle?)</ID>
