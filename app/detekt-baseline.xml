@@ -14,7 +14,6 @@
     <ID>CyclomaticComplexMethod:RoutingGraph.kt$RoutingGraph$fun preprocessObjectsToAvoid()</ID>
     <ID>CyclomaticComplexMethod:RoutingGraph.kt$RoutingGraph$private fun calculateAvoidanceRouteCost( sourceX: Float, sourceZ: Float, destX: Float, destZ: Float, simpleDistance: Float, maxCost: Float = Float.POSITIVE_INFINITY ): Float</ID>
     <ID>CyclomaticComplexMethod:RoutingGraph.kt$RoutingGraph$suspend fun searchForRoute(): List&lt;RouteEntry&gt;?</ID>
-    <ID>CyclomaticComplexMethod:RoutingSettingsFragment.kt$RoutingSettingsFragment$override fun onViewCreated(view: View, savedInstanceState: Bundle?)</ID>
     <ID>LargeClass:AgentViewModel.kt$AgentViewModel : AndroidViewModelListener</ID>
     <ID>LargeClass:CPU.kt$CPU : CoroutineScope</ID>
     <ID>LongMethod:AgentViewModel.kt$AgentViewModel$fun revertSettings(settings: UserSettings): UserSettings</ID>
@@ -32,7 +31,6 @@
     <ID>LongMethod:RouteFragment.kt$RouteFragment.RouteEntryViewHolder$fun bind(entry: RouteEntry)</ID>
     <ID>LongMethod:RoutingGraph.kt$RoutingGraph$private fun calculateAvoidanceRouteCost( sourceX: Float, sourceZ: Float, destX: Float, destZ: Float, simpleDistance: Float, maxCost: Float = Float.POSITIVE_INFINITY ): Float</ID>
     <ID>LongMethod:RoutingGraph.kt$RoutingGraph$suspend fun searchForRoute(): List&lt;RouteEntry&gt;?</ID>
-    <ID>LongMethod:RoutingSettingsFragment.kt$RoutingSettingsFragment$override fun onViewCreated(view: View, savedInstanceState: Bundle?)</ID>
     <ID>LongMethod:StationEntryFragment.kt$StationEntryFragment$override fun onViewCreated(view: View, savedInstanceState: Bundle?)</ID>
     <ID>LongMethod:StationEntryFragment.kt$StationEntryFragment$private fun onStationEntryUpdate(entry: Station)</ID>
     <ID>LongParameterList:MainActivity.kt$MainActivity$( channelId: String, title: String, message: String, ongoing: Boolean = false, onIntent: Intent.() -&gt; Unit = { }, setBuilder: (NotificationCompat.Builder) -&gt; Unit = { } )</ID>
