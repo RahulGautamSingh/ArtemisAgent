@@ -80,36 +80,18 @@ class SettingsFragmentTest {
             assertRecyclerViewItemCount(R.id.settingsPageMenu, pageTitles.size)
         }
 
-        fun testAllEnabled(
+        fun testSettingsWithAllAndNone(
             @IdRes allButton: Int,
             @IdRes noneButton: Int,
-            buttons: IntArray,
-            skipToggleTest: Boolean,
-        ) {
-            assertDisabled(allButton)
-            assertEnabled(noneButton)
-
-            if (skipToggleTest) return
-
-            listOf(
-                Triple(noneButton, allButton, false),
-                Triple(allButton, noneButton, true),
-            ).forEach { (clicked, other, checked) ->
-                testMultipleOptions(clicked, other, buttons, checked)
-            }
-        }
-
-        fun testNotAllEnabled(
-            @IdRes allButton: Int,
-            @IdRes noneButton: Int,
-            buttons: IntArray,
-            enabled: BooleanArray,
+            settingsButtons: IntArray,
+            settingsEnabled: BooleanArray,
             skipToggleTest: Boolean,
             ifEnabled: ((Int, Boolean) -> Unit)? = null,
         ) {
-            val anyEnabled = enabled.any { it }
+            val anyEnabled = settingsEnabled.any { it }
+            val allEnabled = settingsEnabled.all { it }
 
-            assertEnabled(allButton)
+            ArtemisAgentTestHelpers.assertEnabled(allButton, !allEnabled)
             ArtemisAgentTestHelpers.assertEnabled(noneButton, anyEnabled)
 
             if (skipToggleTest) return
@@ -117,14 +99,16 @@ class SettingsFragmentTest {
             listOf(
                 Triple(allButton, noneButton, true),
                 Triple(noneButton, allButton, false),
-            ).forEach { (clicked, other, checked) ->
-                testMultipleOptions(clicked, other, buttons, checked, ifEnabled)
+            ).let {
+                if (allEnabled) it.reversed() else it
+            }.forEach { (clicked, other, checked) ->
+                testMultipleOptions(clicked, other, settingsButtons, checked, ifEnabled)
             }
 
-            if (anyEnabled) {
-                enabled.forEachIndexed { index, on ->
+            if (anyEnabled && !allEnabled) {
+                settingsEnabled.forEachIndexed { index, on ->
                     if (on) {
-                        clickOn(buttons[index])
+                        clickOn(settingsButtons[index])
                     }
                 }
                 assertEnabled(noneButton)

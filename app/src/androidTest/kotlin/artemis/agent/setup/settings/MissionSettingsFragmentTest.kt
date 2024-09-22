@@ -93,22 +93,13 @@ class MissionSettingsFragmentTest {
                 ArtemisAgentTestHelpers.assertChecked(id, rewardsEnabled[index])
             }
 
-            if (rewardsEnabled.all { it }) {
-                SettingsFragmentTest.testAllEnabled(
-                    R.id.rewardsAllButton,
-                    R.id.rewardsNoneButton,
-                    rewardButtonIDs,
-                    !shouldTest,
-                )
-            } else {
-                SettingsFragmentTest.testNotAllEnabled(
-                    R.id.rewardsAllButton,
-                    R.id.rewardsNoneButton,
-                    rewardButtonIDs,
-                    rewardsEnabled,
-                    !shouldTest,
-                )
-            }
+            SettingsFragmentTest.testSettingsWithAllAndNone(
+                R.id.rewardsAllButton,
+                R.id.rewardsNoneButton,
+                rewardButtonIDs,
+                rewardsEnabled,
+                !shouldTest,
+            )
         }
 
         fun testMissionsSubMenuAutoDismissal(autoDismissal: Boolean) {

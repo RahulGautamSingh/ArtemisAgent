@@ -154,22 +154,13 @@ class RoutingSettingsFragmentTest {
                 ArtemisAgentTestHelpers.assertChecked(id, incentives[index])
             }
 
-            if (incentives.all { it }) {
-                SettingsFragmentTest.testAllEnabled(
-                    R.id.incentivesAllButton,
-                    R.id.incentivesNoneButton,
-                    routingIncentiveButtons,
-                    !shouldTest,
-                )
-            } else {
-                SettingsFragmentTest.testNotAllEnabled(
-                    R.id.incentivesAllButton,
-                    R.id.incentivesNoneButton,
-                    routingIncentiveButtons,
-                    incentives,
-                    !shouldTest,
-                )
-            }
+            SettingsFragmentTest.testSettingsWithAllAndNone(
+                R.id.incentivesAllButton,
+                R.id.incentivesNoneButton,
+                routingIncentiveButtons,
+                incentives,
+                !shouldTest,
+            )
         }
 
         fun testRoutingSubMenuAvoidances(
@@ -196,28 +187,19 @@ class RoutingSettingsFragmentTest {
                 testRoutingSubMenuAvoidance(index, enabled[index], clearances[index])
             }
 
-            if (enabled.all { it }) {
-                SettingsFragmentTest.testAllEnabled(
-                    R.id.avoidancesAllButton,
-                    R.id.avoidancesNoneButton,
-                    routingAvoidanceButtons,
-                    !shouldTest,
-                )
-            } else {
-                SettingsFragmentTest.testNotAllEnabled(
-                    R.id.avoidancesAllButton,
-                    R.id.avoidancesNoneButton,
-                    routingAvoidanceButtons,
-                    enabled,
-                    !shouldTest,
-                ) { index, on ->
-                    if (on) {
-                        assertDisplayed(routingAvoidanceFields[index], clearances[index].toString())
-                        assertDisplayed(routingAvoidanceKm[index], R.string.kilometres)
-                    } else {
-                        assertNotDisplayed(routingAvoidanceFields[index])
-                        assertNotDisplayed(routingAvoidanceKm[index])
-                    }
+            SettingsFragmentTest.testSettingsWithAllAndNone(
+                R.id.avoidancesAllButton,
+                R.id.avoidancesNoneButton,
+                routingAvoidanceButtons,
+                enabled,
+                !shouldTest,
+            ) { index, on ->
+                if (on) {
+                    assertDisplayed(routingAvoidanceFields[index], clearances[index].toString())
+                    assertDisplayed(routingAvoidanceKm[index], R.string.kilometres)
+                } else {
+                    assertNotDisplayed(routingAvoidanceFields[index])
+                    assertNotDisplayed(routingAvoidanceKm[index])
                 }
             }
         }
