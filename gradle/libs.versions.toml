@@ -137,7 +137,6 @@ commons-compress = { module = "org.apache.commons:commons-compress", version = "
 guava = { module = "com.google.guava:guava", version = "latest.release" }
 jsoup = { module = "org.jsoup:jsoup", version = "latest.release" }
 netty = { module = "io.netty:netty-codec-http2", version = "4.1.+" }
-protobuf-java = { module = "com.google.protobuf:protobuf-java", version = "3+" }
 
 [bundles]
 classpath = [

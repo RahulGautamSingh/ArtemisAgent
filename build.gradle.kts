@@ -10,9 +10,6 @@ buildscript {
             classpath(libs.netty) {
                 because("Version 4.1.100.Final patches a high-level security vulnerability")
             }
-            classpath(libs.protobuf.java) {
-                because("Version 3.25.5 patches a high-level security vulnerability")
-            }
             classpath(libs.bouncycastle) {
                 because("Version 1.78 patches three moderate security vulnerabilities")
             }
