@@ -10,6 +10,7 @@ import com.walkertribe.ian.protocol.PacketTestListenerModule
 import com.walkertribe.ian.protocol.core.PacketTestFixture.Companion.organizeTests
 import com.walkertribe.ian.protocol.core.PacketTestFixture.Companion.prepare
 import com.walkertribe.ian.world.ArtemisObjectTestModule
+import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.annotation.Ignored
 import io.kotest.core.factory.TestFactory
@@ -123,6 +124,16 @@ sealed class PacketTestSpec<T : Packet>(
             abstract val payloadGen: Gen<ByteReadPacket>
         }
 
+        private val expectedBehaviour by lazy { if (isRequired) "parse even" else "skip" }
+
+        private val emptyListenerRegistry by lazy { ListenerRegistry() }
+        private val testListenerRegistry by lazy {
+            ListenerRegistry().apply { register(PacketTestListenerModule) }
+        }
+        private val objectListenerRegistry by lazy {
+            ListenerRegistry().apply { register(ArtemisObjectTestModule) }
+        }
+
         open suspend fun DescribeSpecContainerScope.describeMore(
             readChannel: ByteReadChannel,
         ) { }
@@ -146,7 +157,7 @@ sealed class PacketTestSpec<T : Packet>(
                     val objectListenerBehaviour =
                         if (fixture.recognizeObjectListeners) "parse with" else "ignore"
 
-                    val testCases = mutableListOf(
+                    val testCases = listOfNotNull(
                         Triple(
                             "Can read from PacketReader",
                             testListenerRegistry,
@@ -157,41 +168,15 @@ sealed class PacketTestSpec<T : Packet>(
                             emptyListenerRegistry,
                             isRequired,
                         ),
+                        if (isRequired) null else Triple(
+                            "Will $objectListenerBehaviour object listeners",
+                            objectListenerRegistry,
+                            fixture.recognizeObjectListeners,
+                        ),
                     )
-                    if (!isRequired) {
-                        testCases.add(
-                            Triple(
-                                "Will $objectListenerBehaviour object listeners",
-                                objectListenerRegistry,
-                                fixture.recognizeObjectListeners,
-                            ),
-                        )
-                    }
 
-                    withData(
-                        nameFn = { it.first },
-                        testCases,
-                    ) { (_, listenerRegistry, expectPacket) ->
-                        val reader = PacketReader(readChannel, listenerRegistry)
-
-                        fixture.generator.checkAll { data ->
-                            reader.version = data.version
-                            readChannel.prepare(fixture.packetType, data.buildPayload())
-
-                            if (expectPacket) {
-                                val result = reader.readPacket()
-                                result.shouldBeInstanceOf<ParseResult.Success>()
-
-                                val packet = fixture.testType(result.packet)
-                                data.validate(packet)
-                                packets.add(packet)
-                                fixture.afterTest(data)
-                            } else {
-                                shouldThrow<EOFException> { reader.readPacket() }
-                            }
-                        }
-
-                        reader.close()
+                    withData(nameFn = { it.first }, testCases) {
+                        runTest(fixture, it.second, it.third, readChannel)
                     }
 
                     it("Can offer to listener modules") {
@@ -209,6 +194,34 @@ sealed class PacketTestSpec<T : Packet>(
                 describeMore(readChannel)
                 describeFailures(readChannel)
             }
+        }
+
+        private suspend fun runTest(
+            fixture: PacketTestFixture.Server<T>,
+            listenerRegistry: ListenerRegistry,
+            expectPacket: Boolean,
+            readChannel: ByteReadChannel,
+        ) {
+            val reader = PacketReader(readChannel, listenerRegistry)
+
+            fixture.generator.checkAll { data ->
+                reader.version = data.version
+                readChannel.prepare(fixture.packetType, data.buildPayload())
+
+                if (expectPacket) {
+                    val result = shouldNotThrowAny { reader.readPacket() }
+                    result.shouldBeInstanceOf<ParseResult.Success>()
+
+                    val packet = fixture.testType(result.packet)
+                    data.validate(packet)
+                    packets.add(packet)
+                    fixture.afterTest(data)
+                } else {
+                    shouldThrow<EOFException> { reader.readPacket() }
+                }
+            }
+
+            reader.close()
         }
 
         private suspend fun DescribeSpecContainerScope.describeFailures(
