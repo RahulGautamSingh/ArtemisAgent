@@ -7,16 +7,18 @@ import com.walkertribe.ian.enums.OrdnanceType
 import com.walkertribe.ian.enums.TubeState
 import com.walkertribe.ian.util.BoolState
 import com.walkertribe.ian.util.boolState
+import com.walkertribe.ian.util.shouldBeFalse
 import com.walkertribe.ian.vesseldata.Empty
 import com.walkertribe.ian.vesseldata.TestVessel
 import com.walkertribe.ian.vesseldata.Vessel
 import com.walkertribe.ian.vesseldata.VesselData
 import com.walkertribe.ian.vesseldata.vesselData
 import io.kotest.assertions.throwables.shouldNotThrow
-import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.assertions.throwables.shouldThrowUnit
 import io.kotest.core.factory.TestFactory
 import io.kotest.core.spec.style.describeSpec
 import io.kotest.core.spec.style.scopes.DescribeSpecContainerScope
+import io.kotest.datatest.WithDataTestName
 import io.kotest.datatest.withData
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
@@ -346,7 +348,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                 Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, LOCATION, ::Properties),
             ) { base, test ->
                 test.updateDirectly(base)
-                shouldThrow<IllegalArgumentException> { test.updateThroughDsl(base) }
+                shouldThrowUnit<IllegalArgumentException> { test.updateThroughDsl(base) }
             }
         }
 
@@ -494,7 +496,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                 Arb.bind(X, Y, Z, ::Properties),
             ) { blackHole, test ->
                 test.updateDirectly(blackHole)
-                shouldThrow<IllegalArgumentException> { test.updateThroughDsl(blackHole) }
+                shouldThrowUnit<IllegalArgumentException> { test.updateThroughDsl(blackHole) }
             }
         }
     }
@@ -660,7 +662,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                 Arb.bind(IS_NOT_TYPHON, X, Y, Z, ::Properties),
             ) { creature, test ->
                 test.updateDirectly(creature)
-                shouldThrow<IllegalArgumentException> { test.updateThroughDsl(creature) }
+                shouldThrowUnit<IllegalArgumentException> { test.updateThroughDsl(creature) }
             }
         }
     }
@@ -813,7 +815,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                 Arb.bind(X, Y, Z, ::Properties),
             ) { mine, test ->
                 test.updateDirectly(mine)
-                shouldThrow<IllegalArgumentException> { test.updateThroughDsl(mine) }
+                shouldThrowUnit<IllegalArgumentException> { test.updateThroughDsl(mine) }
             }
         }
     }
@@ -1222,7 +1224,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                 ),
             ) { npc, test ->
                 test.updateDirectly(npc)
-                shouldThrow<IllegalArgumentException> { test.updateThroughDsl(npc) }
+                shouldThrowUnit<IllegalArgumentException> { test.updateThroughDsl(npc) }
             }
         }
 
@@ -1869,9 +1871,9 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                 ),
             ) { player, test ->
                 test.updateDirectly(player)
-                shouldThrow<IllegalArgumentException> { test.updateThroughPlayerDsl(player) }
-                shouldThrow<IllegalArgumentException> { test.updateThroughWeaponsDsl(player) }
-                shouldThrow<IllegalArgumentException> { test.updateThroughUpgradesDsl(player) }
+                shouldThrowUnit<IllegalArgumentException> { test.updateThroughPlayerDsl(player) }
+                shouldThrowUnit<IllegalArgumentException> { test.updateThroughWeaponsDsl(player) }
+                shouldThrowUnit<IllegalArgumentException> { test.updateThroughUpgradesDsl(player) }
             }
         }
 
@@ -1933,6 +1935,32 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
             }
         }
 
+        enum class DockInvalidatingTestCase(
+            val impulseArb: Arb<Float>,
+            val warpArb: Arb<Byte>,
+        ) : WithDataTestName {
+            IMPULSE(Arb.numericFloat(min = Float.MIN_VALUE), Arb.of(0)) {
+                override fun update(player: ArtemisPlayer, impulse: Float, warp: Byte) {
+                    player.impulse.value = impulse
+                }
+            },
+            WARP(Arb.of(0f), Arb.byte(min = 1, max = 4)) {
+                override fun update(player: ArtemisPlayer, impulse: Float, warp: Byte) {
+                    player.warp.value = warp
+                }
+            },
+            IMPULSE_AND_WARP(Arb.numericFloat(min = Float.MIN_VALUE), Arb.byte(min = 1, max = 4)) {
+                override fun update(player: ArtemisPlayer, impulse: Float, warp: Byte) {
+                    player.impulse.value = impulse
+                    player.warp.value = warp
+                }
+            };
+
+            abstract fun update(player: ArtemisPlayer, impulse: Float, warp: Byte)
+
+            override fun dataTestName(): String = "At ${name.lowercase().replace('_', ' ')}"
+        }
+
         override suspend fun DescribeSpecContainerScope.describeMore() {
             describeVesselDataTests(arbObject, HULL_ID)
 
@@ -1943,65 +1971,27 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                     "Higher than 4" to Arb.byte(min = 5),
                 ) { (_, testGen) ->
                     checkAll(arbObject, testGen) { player, warp ->
-                        shouldThrow<IllegalArgumentException> {
-                            player.warp.value = warp
-                            null
-                        }
+                        shouldThrowUnit<IllegalArgumentException> { player.warp.value = warp }
                     }
                 }
             }
 
             describe("Undock when moving") {
-                it("At impulse") {
+                withData(DockInvalidatingTestCase.entries) { test ->
                     checkAll(
                         arbObjectPair,
                         Arb.int().filter { it != -1 },
-                        Arb.numericFloat(min = Float.MIN_VALUE),
-                    ) { (playerA, playerB), dockingBase, impulse ->
-                        playerA.dockingBase.value = dockingBase
-                        playerA.docked = BoolState.True
-
-                        playerB.impulse.value = impulse
-                        playerB updates playerA
-
-                        playerA.dockingBase shouldContainValue 0
-                        playerA.docked shouldBeEqual BoolState.False
-                    }
-                }
-
-                it("At warp") {
-                    checkAll(
-                        arbObjectPair,
-                        Arb.int().filter { it != -1 },
-                        Arb.byte(min = 1, max = 4),
-                    ) { (playerA, playerB), dockingBase, warp ->
-                        playerA.dockingBase.value = dockingBase
-                        playerA.docked = BoolState.True
-
-                        playerB.warp.value = warp
-                        playerB updates playerA
-
-                        playerA.dockingBase shouldContainValue 0
-                        playerA.docked shouldBeEqual BoolState.False
-                    }
-                }
-
-                it("At impulse and warp") {
-                    checkAll(
-                        arbObjectPair,
-                        Arb.int().filter { it != -1 },
-                        Arb.numericFloat(min = Float.MIN_VALUE),
-                        Arb.byte(min = 1, max = 4),
+                        test.impulseArb,
+                        test.warpArb,
                     ) { (playerA, playerB), dockingBase, impulse, warp ->
                         playerA.dockingBase.value = dockingBase
                         playerA.docked = BoolState.True
 
-                        playerB.impulse.value = impulse
-                        playerB.warp.value = warp
+                        test.update(playerB, impulse, warp)
                         playerB updates playerA
 
                         playerA.dockingBase shouldContainValue 0
-                        playerA.docked shouldBeEqual BoolState.False
+                        playerA.docked.shouldBeFalse()
                     }
                 }
             }
