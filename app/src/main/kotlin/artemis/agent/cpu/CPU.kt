@@ -642,48 +642,53 @@ class CPU(private val viewModel: AgentViewModel) : CoroutineScope {
     private fun parseProduction(packet: CommsIncomingPacket): Boolean {
         val sender = packet.sender
         val message = packet.message
-        if (message.startsWith(PRODUCED)) {
-            val restOfMessage = message.substring(PRODUCED.length)
-            if (
-                !OrdnanceType.entries.any {
-                    restOfMessage.startsWith(it.getLabelFor(viewModel.version))
+
+        return when {
+            message.startsWith(PRODUCED) -> {
+                val restOfMessage = message.substring(PRODUCED.length)
+                if (
+                    !OrdnanceType.entries.any {
+                        restOfMessage.startsWith(it.getLabelFor(viewModel.version))
+                    }
+                ) {
+                    return false
                 }
-            ) {
-                return false
-            }
 
-            viewModel.stationProductionPacket.tryEmit(packet)
-            viewModel.livingStationNameIndex[sender]?.let(viewModel.livingStations::get)?.apply {
-                recalibrateSpeed(packet.timestamp)
-                resetBuildProgress()
-                resetMissile()
-                viewModel.sendToServer(
-                    CommsOutgoingPacket(
-                        obj,
-                        BaseMessage.PleaseReportStatus,
-                        viewModel.vesselData
+                viewModel.stationProductionPacket.tryEmit(packet)
+                viewModel.livingStationNameIndex[sender]?.let(viewModel.livingStations::get)?.apply {
+                    recalibrateSpeed(packet.timestamp)
+                    resetBuildProgress()
+                    resetMissile()
+                    viewModel.sendToServer(
+                        CommsOutgoingPacket(
+                            obj,
+                            BaseMessage.PleaseReportStatus,
+                            viewModel.vesselData,
+                        )
                     )
-                )
-            }
-            return true
-        }
+                }
 
-        if (message.contains(PRODUCING)) {
-            viewModel.livingStationFullNameIndex[sender]?.let(viewModel.livingStations::get)?.apply {
-                resetBuildProgress()
-                resetMissile()
-                viewModel.sendToServer(
-                    CommsOutgoingPacket(
-                        obj,
-                        BaseMessage.PleaseReportStatus,
-                        viewModel.vesselData
+                true
+            }
+
+            message.contains(PRODUCING) -> {
+                viewModel.livingStationFullNameIndex[sender]?.let(viewModel.livingStations::get)?.apply {
+                    resetBuildProgress()
+                    resetMissile()
+                    viewModel.sendToServer(
+                        CommsOutgoingPacket(
+                            obj,
+                            BaseMessage.PleaseReportStatus,
+                            viewModel.vesselData
+                        )
                     )
-                )
-            }
-            return true
-        }
+                }
 
-        return false
+                true
+            }
+
+            else -> false
+        }
     }
 
     private fun parseFighter(packet: CommsIncomingPacket): Boolean {

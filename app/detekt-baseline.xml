@@ -36,7 +36,6 @@
     <ID>ReturnCount:CPU.kt$CPU$private fun parseNewMission(packet: CommsIncomingPacket): Boolean</ID>
     <ID>ReturnCount:CPU.kt$CPU$private fun parseOrdnance(packet: CommsIncomingPacket): Boolean</ID>
     <ID>ReturnCount:CPU.kt$CPU$private fun parseOther(packet: CommsIncomingPacket): Boolean</ID>
-    <ID>ReturnCount:CPU.kt$CPU$private fun parseProduction(packet: CommsIncomingPacket): Boolean</ID>
     <ID>ReturnCount:CPU.kt$CPU$private fun parseSecureData(packet: CommsIncomingPacket): Boolean</ID>
     <ID>ReturnCount:CPU.kt$CPU$private fun parseStandby(packet: CommsIncomingPacket): Boolean</ID>
     <ID>ReturnCount:CPU.kt$CPU$private fun parseTrap(packet: CommsIncomingPacket): Boolean</ID>
