@@ -758,7 +758,7 @@ class MainActivity : AppCompatActivity() {
     private companion object {
         const val STOP_NOTIFICATIONS = -1
         const val NO_NAVIGATION = -1
-        const val GAME_PAGE_UNSPECIFIED = 5
+        const val GAME_PAGE_UNSPECIFIED = 6
 
         const val THEME_RES_FILE_NAME = "theme_res.dat"
 
