@@ -291,7 +291,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
             checkAll(
                 Arb.int(),
                 Arb.long(),
-                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, X, Y, Z, Base::Properties),
+                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, X, Y, Z, ::Properties),
             ) { id, timestamp, test ->
                 shouldNotThrow<IllegalStateException> {
                     test.testKnownObject(test.createThroughDsl(id, timestamp))
@@ -302,7 +302,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testCreateAndUpdateManually() {
             checkAll(
                 arbObject,
-                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, X, Y, Z, Base::Properties),
+                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, X, Y, Z, ::Properties),
             ) { base, test ->
                 test.updateDirectly(base)
                 test.testKnownObject(base)
@@ -312,7 +312,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testCreateAndUpdateFromDsl() {
             checkAll(
                 arbObject,
-                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, X, Y, Z, Base::Properties),
+                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, X, Y, Z, ::Properties),
             ) { base, test ->
                 test.updateThroughDsl(base)
                 test.testKnownObject(base)
@@ -322,7 +322,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testUnknownObjectDoesNotProvideUpdates() {
             checkAll(
                 arbObjectPair,
-                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, X, Y, Z, Base::Properties),
+                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, X, Y, Z, ::Properties),
             ) { (oldBase, newBase), test ->
                 test.updateDirectly(oldBase)
                 newBase updates oldBase
@@ -333,7 +333,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testKnownObjectProvidesUpdates() {
             checkAll(
                 arbObjectPair,
-                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, X, Y, Z, Base::Properties),
+                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, X, Y, Z, ::Properties),
             ) { (oldBase, newBase), test ->
                 test.updateDirectly(newBase)
                 newBase updates oldBase
@@ -344,7 +344,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testDslCannotUpdateKnownObject() {
             checkAll(
                 arbObject,
-                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, X, Y, Z, Base::Properties),
+                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, X, Y, Z, ::Properties),
             ) { base, test ->
                 test.updateDirectly(base)
                 shouldThrow<IllegalArgumentException> { test.updateThroughDsl(base) }
@@ -439,7 +439,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
             checkAll(
                 Arb.int(),
                 Arb.long(),
-                Arb.bind(X, Y, Z, BlackHole::Properties),
+                Arb.bind(X, Y, Z, ::Properties),
             ) { id, timestamp, test ->
                 shouldNotThrow<IllegalStateException> {
                     test.testKnownObject(test.createThroughDsl(id, timestamp))
@@ -450,7 +450,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testCreateAndUpdateManually() {
             checkAll(
                 arbObject,
-                Arb.bind(X, Y, Z, BlackHole::Properties),
+                Arb.bind(X, Y, Z, ::Properties),
             ) { blackHole, test ->
                 test.updateDirectly(blackHole)
                 test.testKnownObject(blackHole)
@@ -460,7 +460,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testCreateAndUpdateFromDsl() {
             checkAll(
                 arbObject,
-                Arb.bind(X, Y, Z, BlackHole::Properties),
+                Arb.bind(X, Y, Z, ::Properties),
             ) { blackHole, test ->
                 test.updateThroughDsl(blackHole)
                 test.testKnownObject(blackHole)
@@ -470,7 +470,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testUnknownObjectDoesNotProvideUpdates() {
             checkAll(
                 arbObjectPair,
-                Arb.bind(X, Y, Z, BlackHole::Properties),
+                Arb.bind(X, Y, Z, ::Properties),
             ) { (oldBlackHole, newBlackHole), test ->
                 test.updateDirectly(oldBlackHole)
                 newBlackHole updates oldBlackHole
@@ -481,7 +481,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testKnownObjectProvidesUpdates() {
             checkAll(
                 arbObjectPair,
-                Arb.bind(X, Y, Z, BlackHole::Properties),
+                Arb.bind(X, Y, Z, ::Properties),
             ) { (oldBlackHole, newBlackHole), test ->
                 test.updateDirectly(newBlackHole)
                 newBlackHole updates oldBlackHole
@@ -492,7 +492,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testDslCannotUpdateKnownObject() {
             checkAll(
                 arbObject,
-                Arb.bind(X, Y, Z, BlackHole::Properties),
+                Arb.bind(X, Y, Z, ::Properties),
             ) { blackHole, test ->
                 test.updateDirectly(blackHole)
                 shouldThrow<IllegalArgumentException> { test.updateThroughDsl(blackHole) }
@@ -605,7 +605,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
             checkAll(
                 Arb.int(),
                 Arb.long(),
-                Arb.bind(IS_NOT_TYPHON, X, Y, Z, Creature::Properties),
+                Arb.bind(IS_NOT_TYPHON, X, Y, Z, ::Properties),
             ) { id, timestamp, test ->
                 shouldNotThrow<IllegalStateException> {
                     test.testKnownObject(test.createThroughDsl(id, timestamp))
@@ -616,7 +616,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testCreateAndUpdateManually() {
             checkAll(
                 arbObject,
-                Arb.bind(IS_NOT_TYPHON, X, Y, Z, Creature::Properties),
+                Arb.bind(IS_NOT_TYPHON, X, Y, Z, ::Properties),
             ) { creature, test ->
                 test.updateDirectly(creature)
                 test.testKnownObject(creature)
@@ -626,7 +626,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testCreateAndUpdateFromDsl() {
             checkAll(
                 arbObject,
-                Arb.bind(IS_NOT_TYPHON, X, Y, Z, Creature::Properties),
+                Arb.bind(IS_NOT_TYPHON, X, Y, Z, ::Properties),
             ) { creature, test ->
                 test.updateThroughDsl(creature)
                 test.testKnownObject(creature)
@@ -636,7 +636,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testUnknownObjectDoesNotProvideUpdates() {
             checkAll(
                 arbObjectPair,
-                Arb.bind(IS_NOT_TYPHON, X, Y, Z, Creature::Properties),
+                Arb.bind(IS_NOT_TYPHON, X, Y, Z, ::Properties),
             ) { (oldCreature, newCreature), test ->
                 test.updateDirectly(oldCreature)
                 newCreature updates oldCreature
@@ -647,7 +647,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testKnownObjectProvidesUpdates() {
             checkAll(
                 arbObjectPair,
-                Arb.bind(IS_NOT_TYPHON, X, Y, Z, Creature::Properties),
+                Arb.bind(IS_NOT_TYPHON, X, Y, Z, ::Properties),
             ) { (oldCreature, newCreature), test ->
                 test.updateDirectly(newCreature)
                 newCreature updates oldCreature
@@ -658,7 +658,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testDslCannotUpdateKnownObject() {
             checkAll(
                 arbObject,
-                Arb.bind(IS_NOT_TYPHON, X, Y, Z, Creature::Properties),
+                Arb.bind(IS_NOT_TYPHON, X, Y, Z, ::Properties),
             ) { creature, test ->
                 test.updateDirectly(creature)
                 shouldThrow<IllegalArgumentException> { test.updateThroughDsl(creature) }
@@ -749,7 +749,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
             checkAll(
                 Arb.int(),
                 Arb.long(),
-                Arb.bind(X, Y, Z, Mine::Properties),
+                Arb.bind(X, Y, Z, ::Properties),
             ) { id, timestamp, test ->
                 shouldNotThrow<IllegalStateException> {
                     test.testKnownObject(test.createThroughDsl(id, timestamp))
@@ -760,7 +760,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testCreateAndUpdateManually() {
             checkAll(
                 arbObject,
-                Arb.bind(X, Y, Z, Mine::Properties),
+                Arb.bind(X, Y, Z, ::Properties),
             ) { mine, test ->
                 test.updateDirectly(mine)
                 test.testKnownObject(mine)
@@ -770,7 +770,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testCreateAndUpdateFromDsl() {
             checkAll(
                 arbObject,
-                Arb.bind(X, Y, Z, Mine::Properties),
+                Arb.bind(X, Y, Z, ::Properties),
             ) { mine, test ->
                 test.updateThroughDsl(mine)
                 test.testKnownObject(mine)
@@ -780,7 +780,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testUnknownObjectDoesNotProvideUpdates() {
             checkAll(
                 arbObjectPair,
-                Arb.bind(X, Y, Z, Mine::Properties),
+                Arb.bind(X, Y, Z, ::Properties),
             ) { (oldMine, newMine), test ->
                 test.updateDirectly(oldMine)
                 newMine updates oldMine
@@ -791,7 +791,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testKnownObjectProvidesUpdates() {
             Arb.pair(
                 arbObject,
-                Arb.bind(X, Y, Z, Mine::Properties),
+                Arb.bind(X, Y, Z, ::Properties),
             ).flatMap { (mine, test) ->
                 Arb.long().filter { it != mine.timestamp }.map { timestamp ->
                     val otherMine = ArtemisMine(mine.id, timestamp)
@@ -811,7 +811,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testDslCannotUpdateKnownObject() {
             checkAll(
                 arbObject,
-                Arb.bind(X, Y, Z, Mine::Properties),
+                Arb.bind(X, Y, Z, ::Properties),
             ) { mine, test ->
                 test.updateDirectly(mine)
                 shouldThrow<IllegalArgumentException> { test.updateThroughDsl(mine) }
@@ -1096,7 +1096,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                     X,
                     Y,
                     Z,
-                    Npc::Properties,
+                    ::Properties,
                 ),
             ) { id, timestamp, test ->
                 shouldNotThrow<IllegalStateException> {
@@ -1121,7 +1121,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                     X,
                     Y,
                     Z,
-                    Npc::Properties,
+                    ::Properties,
                 ),
             ) { npc, test ->
                 test.updateDirectly(npc)
@@ -1145,7 +1145,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                     X,
                     Y,
                     Z,
-                    Npc::Properties,
+                    ::Properties,
                 ),
             ) { npc, test ->
                 test.updateThroughDsl(npc)
@@ -1169,7 +1169,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                     X,
                     Y,
                     Z,
-                    Npc::Properties,
+                    ::Properties,
                 ),
             ) { (oldNpc, newNpc), test ->
                 test.updateDirectly(oldNpc)
@@ -1194,7 +1194,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                     X,
                     Y,
                     Z,
-                    Npc::Properties,
+                    ::Properties,
                 ),
             ) { (oldNpc, newNpc), test ->
                 test.updateDirectly(newNpc)
@@ -1219,7 +1219,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                     X,
                     Y,
                     Z,
-                    Npc::Properties,
+                    ::Properties,
                 ),
             ) { npc, test ->
                 test.updateDirectly(npc)
@@ -1734,7 +1734,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                     LOCATION,
                     ORDNANCE_COUNTS,
                     TUBES,
-                    Player::Properties,
+                    ::Properties,
                 ),
             ) { id, timestamp, test ->
                 shouldNotThrow<IllegalStateException> {
@@ -1761,7 +1761,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                     LOCATION,
                     ORDNANCE_COUNTS,
                     TUBES,
-                    Player::Properties,
+                    ::Properties,
                 ),
             ) { player, test ->
                 test.updateDirectly(player)
@@ -1787,7 +1787,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                     LOCATION,
                     ORDNANCE_COUNTS,
                     TUBES,
-                    Player::Properties,
+                    ::Properties,
                 ),
             ) { player, test ->
                 test.updateThroughDsl(player)
@@ -1813,7 +1813,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                     LOCATION,
                     ORDNANCE_COUNTS,
                     TUBES,
-                    Player::Properties,
+                    ::Properties,
                 ),
             ) { (oldPlayer, newPlayer), test ->
                 test.updateDirectly(oldPlayer)
@@ -1840,7 +1840,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                     LOCATION,
                     ORDNANCE_COUNTS,
                     TUBES,
-                    Player::Properties,
+                    ::Properties,
                 ),
             ) { (oldPlayer, newPlayer), test ->
                 test.updateDirectly(newPlayer)
@@ -1867,7 +1867,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                     LOCATION,
                     ORDNANCE_COUNTS,
                     TUBES,
-                    Player::Properties,
+                    ::Properties,
                 ),
             ) { player, test ->
                 test.updateDirectly(player)
