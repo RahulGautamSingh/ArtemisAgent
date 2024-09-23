@@ -788,15 +788,18 @@ class CPU(private val viewModel: AgentViewModel) : CoroutineScope {
 
     private fun parseContraband(packet: CommsIncomingPacket): Boolean {
         val message = checkForHailResponse(packet) ?: return false
-        val pirateAware = message.startsWith(PRIVATEER)
-        if (!pirateAware && !message.startsWith(CONTRABAND)) return false
 
-        setAllyStatus(
-            packet.sender,
-            message,
-            if (pirateAware) AllyStatus.PIRATE_SUPPLIES else AllyStatus.CONTRABAND
-        )
-        return true
+        val pirateAware = message.startsWith(PRIVATEER)
+        return if (pirateAware || message.startsWith(CONTRABAND)) {
+            setAllyStatus(
+                packet.sender,
+                message,
+                if (pirateAware) AllyStatus.PIRATE_SUPPLIES else AllyStatus.CONTRABAND,
+            )
+            true
+        } else {
+            false
+        }
     }
 
     private fun parseHeaveTo(packet: CommsIncomingPacket): Boolean {
@@ -813,15 +816,18 @@ class CPU(private val viewModel: AgentViewModel) : CoroutineScope {
 
     private fun parseSecureData(packet: CommsIncomingPacket): Boolean {
         val message = checkForHailResponse(packet) ?: return false
-        val pirateAware = message.startsWith(PIRATE_SCUM)
-        if (!pirateAware && !message.startsWith(SECRET_DATA)) return false
 
-        setAllyStatus(
-            packet.sender,
-            message,
-            if (pirateAware) AllyStatus.PIRATE_DATA else AllyStatus.SECURE_DATA
-        )
-        return true
+        val pirateAware = message.startsWith(PIRATE_SCUM)
+        return if (pirateAware || message.startsWith(SECRET_DATA)) {
+            setAllyStatus(
+                packet.sender,
+                message,
+                if (pirateAware) AllyStatus.PIRATE_DATA else AllyStatus.SECURE_DATA,
+            )
+            true
+        } else {
+            false
+        }
     }
 
     private fun parseNeedsDamcon(packet: CommsIncomingPacket): Boolean {
@@ -885,15 +891,18 @@ class CPU(private val viewModel: AgentViewModel) : CoroutineScope {
 
     private fun parseTrap(packet: CommsIncomingPacket): Boolean {
         val message = checkForHailResponse(packet) ?: return false
-        val mineTrap = message.startsWith(MINE_TRAP)
-        if (!mineTrap && !message.startsWith(FIGHTER_TRAP)) return false
 
-        setAllyStatus(
-            packet.sender,
-            message,
-            if (mineTrap) AllyStatus.MINE_TRAP else AllyStatus.FIGHTER_TRAP
-        )
-        return true
+        val mineTrap = message.startsWith(MINE_TRAP)
+        return if (mineTrap || message.startsWith(FIGHTER_TRAP)) {
+            setAllyStatus(
+                packet.sender,
+                message,
+                if (mineTrap) AllyStatus.MINE_TRAP else AllyStatus.FIGHTER_TRAP,
+            )
+            true
+        } else {
+            false
+        }
     }
 
     private fun parseNewMission(packet: CommsIncomingPacket): Boolean {
@@ -1207,11 +1216,14 @@ class CPU(private val viewModel: AgentViewModel) : CoroutineScope {
         val message = checkForHailResponse(packet)?.takeUnless {
             it.startsWith(TO_STATION) || it.startsWith(FIX_ENGINES)
         } ?: return false
-        val sender = packet.sender
-        if (sender.startsWith("DS")) return false
 
-        setAllyStatus(sender, message, AllyStatus.NORMAL)
-        return true
+        val sender = packet.sender
+        return if (sender.startsWith("DS")) {
+            false
+        } else {
+            setAllyStatus(sender, message, AllyStatus.NORMAL)
+            true
+        }
     }
 
     private fun setAllyStatus(sender: String, message: String, status: AllyStatus) {

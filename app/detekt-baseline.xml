@@ -29,14 +29,10 @@
     <ID>NestedBlockDepth:CPU.kt$CPU$private fun parseMissionProgress(packet: CommsIncomingPacket): Boolean</ID>
     <ID>NestedBlockDepth:CPU.kt$CPU$private fun processMissionProgress( source: String, destination: String, shipName: String )</ID>
     <ID>NestedBlockDepth:MainActivity.kt$MainActivity$override fun onCreate(savedInstanceState: Bundle?)</ID>
-    <ID>ReturnCount:CPU.kt$CPU$private fun parseContraband(packet: CommsIncomingPacket): Boolean</ID>
     <ID>ReturnCount:CPU.kt$CPU$private fun parseMissionProgress(packet: CommsIncomingPacket): Boolean</ID>
     <ID>ReturnCount:CPU.kt$CPU$private fun parseNewMission(packet: CommsIncomingPacket): Boolean</ID>
     <ID>ReturnCount:CPU.kt$CPU$private fun parseOrdnance(packet: CommsIncomingPacket): Boolean</ID>
-    <ID>ReturnCount:CPU.kt$CPU$private fun parseOther(packet: CommsIncomingPacket): Boolean</ID>
-    <ID>ReturnCount:CPU.kt$CPU$private fun parseSecureData(packet: CommsIncomingPacket): Boolean</ID>
     <ID>ReturnCount:CPU.kt$CPU$private fun parseStandby(packet: CommsIncomingPacket): Boolean</ID>
-    <ID>ReturnCount:CPU.kt$CPU$private fun parseTrap(packet: CommsIncomingPacket): Boolean</ID>
     <ID>ReturnCount:RoutingGraph.kt$RoutingGraph$suspend fun searchForRoute(): List&lt;RouteEntry&gt;?</ID>
     <ID>TooManyFunctions:AgentViewModel.kt$AgentViewModel : AndroidViewModelListener</ID>
     <ID>TooManyFunctions:CPU.kt$CPU : CoroutineScope</ID>
