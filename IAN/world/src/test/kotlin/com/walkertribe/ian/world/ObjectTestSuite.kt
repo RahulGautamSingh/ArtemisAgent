@@ -61,6 +61,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         val X = Arb.numericFloat()
         val Y = Arb.numericFloat()
         val Z = Arb.numericFloat()
+        val LOCATION = Arb.triple(X, Y, Z)
 
         suspend fun DescribeSpecContainerScope.describeVesselDataTests(
             arbObject: Gen<BaseArtemisShielded<*>>,
@@ -158,10 +159,8 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
             private val shields: Float,
             private val shieldsMax: Float,
             private val hullId: Int,
-            x: Float,
-            y: Float,
-            z: Float,
-        ) : BaseProperties<ArtemisBase>(x, y, z) {
+            location: Triple<Float, Float, Float>,
+        ) : BaseProperties<ArtemisBase>(location.first, location.second, location.third) {
             override fun updateDirectly(obj: ArtemisBase) {
                 super.updateDirectly(obj)
                 obj.name.value = name
@@ -291,7 +290,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
             checkAll(
                 Arb.int(),
                 Arb.long(),
-                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, X, Y, Z, ::Properties),
+                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, LOCATION, ::Properties),
             ) { id, timestamp, test ->
                 shouldNotThrow<IllegalStateException> {
                     test.testKnownObject(test.createThroughDsl(id, timestamp))
@@ -302,7 +301,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testCreateAndUpdateManually() {
             checkAll(
                 arbObject,
-                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, X, Y, Z, ::Properties),
+                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, LOCATION, ::Properties),
             ) { base, test ->
                 test.updateDirectly(base)
                 test.testKnownObject(base)
@@ -312,7 +311,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testCreateAndUpdateFromDsl() {
             checkAll(
                 arbObject,
-                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, X, Y, Z, ::Properties),
+                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, LOCATION, ::Properties),
             ) { base, test ->
                 test.updateThroughDsl(base)
                 test.testKnownObject(base)
@@ -322,7 +321,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testUnknownObjectDoesNotProvideUpdates() {
             checkAll(
                 arbObjectPair,
-                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, X, Y, Z, ::Properties),
+                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, LOCATION, ::Properties),
             ) { (oldBase, newBase), test ->
                 test.updateDirectly(oldBase)
                 newBase updates oldBase
@@ -333,7 +332,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testKnownObjectProvidesUpdates() {
             checkAll(
                 arbObjectPair,
-                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, X, Y, Z, ::Properties),
+                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, LOCATION, ::Properties),
             ) { (oldBase, newBase), test ->
                 test.updateDirectly(newBase)
                 newBase updates oldBase
@@ -344,7 +343,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         override suspend fun testDslCannotUpdateKnownObject() {
             checkAll(
                 arbObject,
-                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, X, Y, Z, ::Properties),
+                Arb.bind(NAME, SHIELDS, SHIELDS_MAX, HULL_ID, LOCATION, ::Properties),
             ) { base, test ->
                 test.updateDirectly(base)
                 shouldThrow<IllegalArgumentException> { test.updateThroughDsl(base) }
@@ -1321,7 +1320,6 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
             DOUBLE_AGENT_COUNT,
             DOUBLE_AGENT_SECONDS,
         )
-        private val LOCATION = Arb.triple(X, Y, Z)
         private val ORDNANCE_COUNTS = Arb.list(
             Arb.byte(min = 0),
             OrdnanceType.size..OrdnanceType.size,
