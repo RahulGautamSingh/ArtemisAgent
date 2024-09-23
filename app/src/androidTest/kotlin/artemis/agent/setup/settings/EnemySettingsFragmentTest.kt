@@ -250,10 +250,10 @@ class EnemySettingsFragmentTest {
 
             if (!shouldTest) return
 
-            clickOn(R.id.surrenderRangeEnableButton)
-            testEnemySubMenuSurrenderRange(surrenderRange == null, null)
-            clickOn(R.id.surrenderRangeEnableButton)
-            testEnemySubMenuSurrenderRange(surrenderRange != null, surrenderRange)
+            booleanArrayOf(true, false).forEach {
+                clickOn(R.id.surrenderRangeEnableButton)
+                testEnemySubMenuSurrenderRange((surrenderRange == null) == it, surrenderRange)
+            }
         }
 
         fun testEnemySubMenuSurrenderRange(

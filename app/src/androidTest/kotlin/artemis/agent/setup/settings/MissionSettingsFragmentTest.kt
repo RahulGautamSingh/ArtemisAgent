@@ -13,6 +13,7 @@ import com.adevinta.android.barista.assertion.BaristaCheckedAssertions.assertUnc
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotExist
+import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
 import com.adevinta.android.barista.interaction.BaristaScrollInteractions.scrollTo
 import org.junit.Rule
 import org.junit.Test
@@ -67,10 +68,10 @@ class MissionSettingsFragmentTest {
         fun testMissionsSubMenuOpen(
             autoDismissal: Boolean,
             rewardsEnabled: BooleanArray,
-            shouldTestRewards: Boolean,
+            shouldTestSettings: Boolean,
         ) {
-            testMissionsSubMenuRewards(rewardsEnabled, shouldTestRewards)
-            testMissionsSubMenuAutoDismissal(autoDismissal)
+            testMissionsSubMenuRewards(rewardsEnabled, shouldTestSettings)
+            testMissionsSubMenuAutoDismissal(autoDismissal, shouldTestSettings)
         }
 
         fun testMissionsSubMenuRewards(rewardsEnabled: BooleanArray, shouldTest: Boolean) {
@@ -91,11 +92,22 @@ class MissionSettingsFragmentTest {
             )
         }
 
-        fun testMissionsSubMenuAutoDismissal(autoDismissal: Boolean) {
+        fun testMissionsSubMenuAutoDismissal(autoDismissal: Boolean, shouldTestToggle: Boolean) {
             scrollTo(R.id.autoDismissalDivider)
             assertDisplayed(R.id.autoDismissalTitle, R.string.auto_dismissal)
             assertDisplayed(R.id.autoDismissalButton)
 
+            testMissionsSubMenuAutoDismissal(autoDismissal)
+
+            if (!shouldTestToggle) return
+
+            booleanArrayOf(!autoDismissal, autoDismissal).forEach {
+                clickOn(R.id.autoDismissalButton)
+                testMissionsSubMenuAutoDismissal(it)
+            }
+        }
+
+        fun testMissionsSubMenuAutoDismissal(autoDismissal: Boolean) {
             if (autoDismissal) {
                 assertChecked(R.id.autoDismissalButton)
                 assertDisplayed(R.id.autoDismissalSecondsLabel, R.string.seconds)
