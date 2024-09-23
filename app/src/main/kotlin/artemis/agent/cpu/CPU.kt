@@ -1130,39 +1130,28 @@ class CPU(private val viewModel: AgentViewModel) : CoroutineScope {
         return true
     }
 
-    private fun parseDirections(packet: CommsIncomingPacket): Boolean =
-        TURNING.find(packet.message)?.run {
-            val details = value.substring(TURNING_PREFIX.length)
-            with(viewModel) {
-                allyShipIndex[packet.sender]?.let(allyShips::get)?.apply {
-                    destination = null
-                    isAttacking = false
-                    isMovingToStation = false
-                    direction = details.run {
-                        when {
-                            startsWith(TURNING_TO) ->
-                                substring(TURNING_TO.length until length - 1).toInt()
-                            startsWith(TURNING_LEFT) ->
-                                (
-                                    (direction ?: 0) +
-                                        AgentViewModel.FULL_HEADING_RANGE -
-                                        substring(
-                                            TURNING_LEFT.length until length - TURNING_DEGREES_OFFSET
-                                        ).toInt()
-                                    ) % AgentViewModel.FULL_HEADING_RANGE
-                            else ->
-                                (
-                                    (direction ?: 0) +
-                                        substring(
-                                            TURNING_RIGHT.length until length - TURNING_DEGREES_OFFSET
-                                        ).toInt()
-                                    ) % AgentViewModel.FULL_HEADING_RANGE
-                        }
-                    }
-                }
+    private fun parseDirections(packet: CommsIncomingPacket): Boolean {
+        val result = TURNING.find(packet.message) ?: return false
+
+        viewModel.allyShipIndex[packet.sender]?.let(viewModel.allyShips::get)?.apply {
+            destination = null
+            isAttacking = false
+            isMovingToStation = false
+
+            val to = result.groups[TO]?.run { value.toInt() }
+            val diff = result.groups[RIGHT]?.run {
+                value.toInt()
+            } ?: result.groups[LEFT]?.run {
+                AgentViewModel.FULL_HEADING_RANGE - value.toInt()
+            } ?: 0
+
+            direction = to ?: diff.let {
+                ((direction ?: 0) + it) % AgentViewModel.FULL_HEADING_RANGE
             }
-            true
-        } == true
+        }
+
+        return true
+    }
 
     private fun parsePlannedDestination(packet: CommsIncomingPacket): Boolean {
         val message = packet.message
@@ -1311,12 +1300,12 @@ class CPU(private val viewModel: AgentViewModel) : CoroutineScope {
 
         const val DEEP_STRIKE_TORPEDO_BUILD_TIME = 300_000L
 
-        const val TURNING_PREFIX = ", we are turning "
-        const val TURNING_LEFT = "left "
-        const val TURNING_RIGHT = "right "
-        const val TURNING_TO = "to "
-        const val TURNING_DEGREES_OFFSET = 9
-        val TURNING = Regex("$TURNING_PREFIX(to \\d+|(lef|righ)t \\d+ degrees)\\.$")
+        const val LEFT = "left"
+        const val RIGHT = "right"
+        const val TO = "to"
+        val TURNING = Regex(
+            ", we are turning (to ?<$TO>\\d+|(left ?<$LEFT>\\d+|right ?<$LEFT>\\d+) degrees)\\.$"
+        )
         val OK_GOING = Regex("^Okay, going to (defend|rendezvous with) ")
         val OUR_SHIELDS = Regex("^Our shields are at \\d+ \\(\\d+%\\), \\d+ \\(\\d+%\\)\\.")
         val AMBASS_PICKUP = Regex("^Thanks for (rescuing our a|picking up the)")

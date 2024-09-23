@@ -26,7 +26,6 @@
     <ID>LoopWithTooManyJumpStatements:RoutingGraph.kt$RoutingGraph$while</ID>
     <ID>NestedBlockDepth:AgentViewModel.kt$AgentViewModel$private suspend fun updateObjects()</ID>
     <ID>NestedBlockDepth:CPU.kt$CPU$private fun onNpcCreate(npc: ArtemisNpc): Boolean</ID>
-    <ID>NestedBlockDepth:CPU.kt$CPU$private fun parseDirections(packet: CommsIncomingPacket): Boolean</ID>
     <ID>NestedBlockDepth:CPU.kt$CPU$private fun parseMissionProgress(packet: CommsIncomingPacket): Boolean</ID>
     <ID>NestedBlockDepth:CPU.kt$CPU$private fun processMissionProgress( source: String, destination: String, shipName: String )</ID>
     <ID>NestedBlockDepth:MainActivity.kt$MainActivity$override fun onCreate(savedInstanceState: Bundle?)</ID>
