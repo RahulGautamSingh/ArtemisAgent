@@ -184,82 +184,81 @@ class CPU(private val viewModel: AgentViewModel) : CoroutineScope {
 
     @Listener
     fun onPlayerUpdate(update: ArtemisPlayer) {
-        with(viewModel) {
-            checkGameStart()
+        viewModel.checkGameStart()
 
-            ordnanceUpdated.value = update.hasWeaponsData
+        viewModel.ordnanceUpdated.value = update.hasWeaponsData
 
-            val id = update.id
-            var existingPlayer = players[id]
+        val id = update.id
+        val existingPlayer = viewModel.players[id]?.also { player ->
+            if (player == viewModel.playerShip) {
+                val dockingBase = player.dockingBase.value.takeIf {
+                    it > 0
+                }?.let(viewModel.livingStations::get)
 
-            if (existingPlayer != null) {
-                if (existingPlayer == playerShip) {
-                    val dockingBase = existingPlayer.dockingBase.value
-                    if (dockingBase > 0 && (update.impulse.value > 0 || update.warp.value > 0)) {
-                        livingStations[dockingBase]?.apply {
-                            sendToServer(
-                                CommsOutgoingPacket(
-                                    obj,
-                                    BaseMessage.PleaseReportStatus,
-                                    vesselData
-                                )
-                            )
-                            isStandingBy = false
-                        }
-                    }
-                }
-                update updates existingPlayer
-            } else {
-                existingPlayer = update
-                players[id] = existingPlayer
-            }
-
-            val index = existingPlayer.shipIndex.value.toInt()
-            if (index in playerIndex.indices) {
-                playerIndex[index] = id
-            }
-
-            playerShip?.also { player ->
-                val selectedPlayerUpdated = update == player
-                if (selectedPlayerUpdated) {
-                    var count = player.doubleAgentCount.value
-                    var active = player.doubleAgentActive.value.booleanValue
-                    var agentUpdate = false
-
-                    update.doubleAgentCount.value.also {
-                        if (it >= 0) {
-                            agentUpdate = true
-                            count = it
-                        }
-                    }
-                    update.doubleAgentActive.value.also {
-                        if (it.isKnown) {
-                            agentUpdate = true
-                            active = it.booleanValue
-                            doubleAgentActive.value = active
-                            if (!active) {
-                                doubleAgentSecondsLeft = -1
-                            }
-                        }
-                    }
-                    update.doubleAgentSecondsLeft.value.also {
-                        if (it > 0 || (it == 0 && active)) {
-                            doubleAgentSecondsLeft = it
-                        }
-                    }
-                    update.alertStatus.value?.also {
-                        alertStatus.value = it
-                    }
-
-                    if (agentUpdate) {
-                        doubleAgentEnabled.value = count > 0 && !active
-                    }
-                }
-
-                if (update.capitalShipID.value == player.id) {
-                    fighterIDs.add(id)
+                if (dockingBase != null && (update.impulse.value > 0 || update.warp.value > 0)) {
+                    viewModel.sendToServer(
+                        CommsOutgoingPacket(
+                            dockingBase.obj,
+                            BaseMessage.PleaseReportStatus,
+                            viewModel.vesselData,
+                        )
+                    )
+                    dockingBase.isStandingBy = false
                 }
             }
+
+            update updates player
+        } ?: update.also { viewModel.players[id] = it }
+
+        val index = existingPlayer.shipIndex.value.toInt()
+        if (index in viewModel.playerIndex.indices) {
+            viewModel.playerIndex[index] = id
+        }
+
+        onSelectedPlayerUpdate(update)
+    }
+
+    private fun onSelectedPlayerUpdate(update: ArtemisPlayer) {
+        val player = viewModel.playerShip ?: return
+
+        if (update == player) {
+            var count = player.doubleAgentCount.value
+            var active = player.doubleAgentActive.value.booleanValue
+            var agentUpdate = false
+
+            val doubleAgentCount = update.doubleAgentCount.value
+            if (doubleAgentCount >= 0) {
+                agentUpdate = true
+                count = doubleAgentCount
+            }
+
+            val doubleAgentActive = update.doubleAgentActive.value
+            if (doubleAgentActive.isKnown) {
+                agentUpdate = true
+                active = doubleAgentActive.booleanValue
+                viewModel.doubleAgentActive.value = active
+                if (!active) {
+                    viewModel.doubleAgentSecondsLeft = -1
+                }
+            }
+
+            update.doubleAgentSecondsLeft.value.also {
+                if (it > 0 || (it == 0 && active)) {
+                    viewModel.doubleAgentSecondsLeft = it
+                }
+            }
+
+            update.alertStatus.value?.also {
+                viewModel.alertStatus.value = it
+            }
+
+            if (agentUpdate) {
+                viewModel.doubleAgentEnabled.value = count > 0 && !active
+            }
+        }
+
+        if (update.capitalShipID.value == player.id) {
+            viewModel.fighterIDs.add(update.id)
         }
     }
 
