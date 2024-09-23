@@ -28,7 +28,6 @@
     <ID>NestedBlockDepth:CPU.kt$CPU$private fun onNpcCreate(npc: ArtemisNpc): Boolean</ID>
     <ID>NestedBlockDepth:CPU.kt$CPU$private fun parseDirections(packet: CommsIncomingPacket): Boolean</ID>
     <ID>NestedBlockDepth:CPU.kt$CPU$private fun parseMissionProgress(packet: CommsIncomingPacket): Boolean</ID>
-    <ID>NestedBlockDepth:CPU.kt$CPU$private fun processMissionCompletion(destination: String, shipName: String)</ID>
     <ID>NestedBlockDepth:CPU.kt$CPU$private fun processMissionProgress( source: String, destination: String, shipName: String )</ID>
     <ID>NestedBlockDepth:MainActivity.kt$MainActivity$override fun onCreate(savedInstanceState: Bundle?)</ID>
     <ID>ReturnCount:CPU.kt$CPU$private fun parseContraband(packet: CommsIncomingPacket): Boolean</ID>

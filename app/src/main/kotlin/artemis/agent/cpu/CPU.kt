@@ -1044,26 +1044,27 @@ class CPU(private val viewModel: AgentViewModel) : CoroutineScope {
     }
 
     private fun processMissionCompletion(destination: String, shipName: String) {
-        with(viewModel) {
-            val timestamp = System.currentTimeMillis() + completedDismissalTime
-            allMissions.forEach { mission ->
-                if (mission.associatedShipName != shipName) return@forEach
-                if (mission.isCompleted) return@forEach
-                if (destination != getFullNameForShip(mission.destination.obj)) return@forEach
+        val timestamp = System.currentTimeMillis() + viewModel.completedDismissalTime
+        viewModel.allMissions.forEach { mission ->
+            if (mission.associatedShipName != shipName) return@forEach
+            if (mission.isCompleted) return@forEach
+            if (destination != viewModel.getFullNameForShip(mission.destination.obj)) return@forEach
 
-                mission.completionTimestamp = timestamp
-                displayedRewards.forEach {
-                    payouts[it.ordinal] += mission.rewards[it.ordinal]
+            mission.completionTimestamp = timestamp
+            viewModel.displayedRewards.forEach {
+                viewModel.payouts[it.ordinal] += mission.rewards[it.ordinal]
+            }
+
+            mission.destination.apply {
+                missions -= viewModel.displayedRewards.sumOf {
+                    mission.rewards[it.ordinal]
                 }
-                mission.destination.apply {
-                    missions -= displayedRewards.sumOf { mission.rewards[it.ordinal] }
-                    if (this is ObjectEntry.Station) {
-                        speedFactor += mission.rewards[RewardType.PRODUCTION.ordinal]
-                    }
+                if (this is ObjectEntry.Station) {
+                    speedFactor += mission.rewards[RewardType.PRODUCTION.ordinal]
                 }
             }
-            updatePayouts()
         }
+        viewModel.updatePayouts()
     }
 
     private fun parseUnderAttack(packet: CommsIncomingPacket): Boolean {
