@@ -263,17 +263,20 @@ class CPU(private val viewModel: AgentViewModel) : CoroutineScope {
         }
     }
 
+    private val npcUpdateFunctions = arrayOf(
+        this::updateAllyShip,
+        this::updateUnscannedBiomech,
+        this::updateScannedBiomech,
+        this::updateEnemy,
+    )
+
     @Listener
     fun onNpcUpdate(update: ArtemisNpc) {
         viewModel.checkGameStart()
 
-        if (updateAllyShip(update)) return
-        if (updateUnscannedBiomech(update)) return
-        if (updateScannedBiomech(update)) return
-        if (updateEnemy(update)) return
+        if (npcUpdateFunctions.any { it(update) }) return
 
         val createdNpc = pendingNPCs.remove(update.id)?.also(update::updates) ?: update
-
         if (!onNpcCreate(createdNpc)) {
             pendingNPCs[createdNpc.id] = createdNpc
         }
