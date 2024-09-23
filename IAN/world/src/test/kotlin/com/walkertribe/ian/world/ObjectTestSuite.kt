@@ -2035,7 +2035,7 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
         }
     }
 
-    private suspend fun DescribeSpecContainerScope.describeTestEqualityAndHashCode() {
+    private suspend fun DescribeSpecContainerScope.describeTestEquality() {
         describe("Equality") {
             it("Equals itself") {
                 arbObject.checkAll { it shouldBeEqual it }
@@ -2081,7 +2081,9 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                 }
             }
         }
+    }
 
+    private suspend fun DescribeSpecContainerScope.describeTestHashCode() {
         describe("Hash code") {
             it("Equals ID") {
                 arbObject.checkAll { it.hashCode() shouldBeEqual it.id }
@@ -2150,7 +2152,8 @@ internal sealed class ObjectTestSuite<T : BaseArtemisObject<T>>(
                     ArtemisObjectTestModule.collected shouldContainExactly objects
                 }
 
-                describeTestEqualityAndHashCode()
+                describeTestEquality()
+                describeTestHashCode()
                 describeMore()
 
                 ArtemisObjectTestModule.collected.clear()
