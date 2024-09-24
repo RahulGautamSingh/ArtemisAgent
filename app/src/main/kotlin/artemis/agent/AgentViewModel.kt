@@ -105,7 +105,6 @@ import java.util.concurrent.CopyOnWriteArraySet
 import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.set
-import kotlin.math.roundToInt
 
 /**
  * The view model containing all running client data and utility functions used by the UI.
@@ -602,9 +601,7 @@ class AgentViewModel(application: Application) :
      * Calculates the heading from the player ship to the given object and formats it as a string.
      */
     private fun calculatePlayerHeadingTo(obj: ArtemisObject<*>): String {
-        val heading = playerShip?.run {
-            headingTo(obj).toDouble().roundToInt() % FULL_HEADING_RANGE
-        } ?: 0
+        val heading = playerShip?.run { headingTo(obj).toDouble().toInt() } ?: 0
         return formattedHeading(heading)
     }
 
