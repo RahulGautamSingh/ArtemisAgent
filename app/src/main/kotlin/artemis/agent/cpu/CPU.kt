@@ -22,7 +22,6 @@ import com.walkertribe.ian.protocol.core.world.IntelPacket
 import com.walkertribe.ian.util.Version
 import com.walkertribe.ian.util.isKnown
 import com.walkertribe.ian.vesseldata.Faction
-import com.walkertribe.ian.world.Artemis
 import com.walkertribe.ian.world.ArtemisBase
 import com.walkertribe.ian.world.ArtemisBlackHole
 import com.walkertribe.ian.world.ArtemisCreature
@@ -619,24 +618,22 @@ class CPU(private val viewModel: AgentViewModel) : CoroutineScope {
     }
 
     private fun parseStandby(packet: CommsIncomingPacket): Boolean {
-        val playerShips = viewModel.selectableShips.value
         val message = packet.message
         if (!message.startsWith(STANDBY)) return false
         val sender = packet.sender
 
         val shipName = message.substring(STANDBY.length, message.length - 1)
-        for (i in 0 until Artemis.SHIP_COUNT) {
-            if (playerShips[i].name != shipName) continue
-
-            if (i == viewModel.shipIndex.value) {
-                viewModel.livingStationFullNameIndex[sender]?.also {
-                    viewModel.livingStations[it]?.isStandingBy = true
-                }
+        val indexOfShip = viewModel.selectableShips.value.indexOfFirst { it.name == shipName }
+        return if (indexOfShip < 0) {
+            false
+        } else {
+            if (indexOfShip == viewModel.shipIndex.value) {
+                viewModel.livingStationFullNameIndex[sender]?.let(
+                    viewModel.livingStations::get
+                )?.isStandingBy = true
             }
-            return true
+            true
         }
-
-        return false
     }
 
     private fun parseProduction(packet: CommsIncomingPacket): Boolean {
