@@ -107,6 +107,12 @@ class HelpFragment : Fragment(R.layout.help_fragment) {
                     },
                 ),
                 HelpTopic(
+                    getString(R.string.help_topics_notifications),
+                    getStringArray(R.array.help_contents_notifications).map {
+                        HelpTopicContent.Text(it)
+                    },
+                ),
+                HelpTopic(
                     getString(R.string.help_topics_about),
                     getStringArray(R.array.help_contents_about).map {
                         HelpTopicContent.Text(it)
