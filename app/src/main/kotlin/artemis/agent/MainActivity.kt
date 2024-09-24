@@ -138,7 +138,6 @@ class MainActivity : AppCompatActivity() {
                         )
                     }
                 }
-                if (strings.isEmpty()) return@collectLatestWhileStarted
 
                 buildNotification(
                     channelId = NotificationManager.CHANNEL_GAME_INFO,
@@ -243,6 +242,21 @@ class MainActivity : AppCompatActivity() {
                             )
                         }
                     }
+                )
+            }
+
+            service.collectLatestWhileStarted(viewModel.destroyedEnemyName) {
+                notificationManager.dismissPerfidyMessage(it)
+            }
+
+            service.collectLatestWhileStarted(viewModel.perfidiousEnemy) { entry ->
+                buildNotification(
+                    channelId = NotificationManager.CHANNEL_PERFIDY,
+                    title = viewModel.getFullNameForShip(entry.enemy),
+                    message = getString(R.string.enemy_perfidy_notification),
+                    onIntent = {
+                        putExtra(Section.GAME.name, GameFragment.Page.ENEMIES.ordinal)
+                    },
                 )
             }
 

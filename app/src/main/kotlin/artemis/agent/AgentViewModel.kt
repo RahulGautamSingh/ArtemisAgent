@@ -363,6 +363,12 @@ class AgentViewModel(application: Application) :
         MutableStateFlow(listOf())
     }
     val enemyIntel: MutableStateFlow<String?> by lazy { MutableStateFlow(null) }
+    val perfidiousEnemy: MutableSharedFlow<EnemyEntry> by lazy {
+        MutableSharedFlow(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    }
+    val destroyedEnemyName: MutableSharedFlow<String> by lazy {
+        MutableSharedFlow(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    }
     var enemySorter = EnemySorter()
     val enemyNameIndex = ConcurrentHashMap<String, Int>()
     val enemies = ConcurrentHashMap<Int, EnemyEntry>()
@@ -963,14 +969,15 @@ class AgentViewModel(application: Application) :
         }
 
         val selectedEnemyEntry = selectedEnemy.value
-        val enemyShipList = enemies.values.filter {
-            !it.vessel.isSingleseat && playerShip?.let(it.enemy::hasBeenScannedBy)?.booleanValue == true
+        val enemyShipList = enemies.values.filter { !it.vessel.isSingleseat }
+        val scannedEnemies = enemyShipList.filter {
+            playerShip?.let(it.enemy::hasBeenScannedBy)?.booleanValue == true
         }.sortedWith(enemySorter).onEach { entry ->
             val enemy = entry.enemy
             entry.heading = calculatePlayerHeadingTo(enemy)
             entry.range = calculatePlayerRangeTo(enemy)
         }
-        val enemyNavOptions = enemySorter.buildCategoryMap(enemyShipList)
+        val enemyNavOptions = enemySorter.buildCategoryMap(scannedEnemies)
 
         val biomechList = if (biomechsEnabled) {
             scannedBiomechs.sortedWith(biomechSorter).onEach {
@@ -995,12 +1002,18 @@ class AgentViewModel(application: Application) :
             else -> { }
         }
 
+        val (surrendered, hostile) = enemyShipList.partition {
+            it.enemy.isSurrendered.value.booleanValue
+        }
+
         val postedInventory = arrayOf(
             livingStations.size.takeIf { stationsExist.value },
             enemyStationList.size.takeIf { enemyStationsExist.value },
             allyShipList.size.takeIf { alliesExist },
             missionList.size.takeIf { missionsExist },
             biomechList.size.takeIf { biomechsExist },
+            hostile.size,
+            surrendered.size.takeIf { it > 0 },
         )
 
         if (!postedInventory.contentEquals(inventory.value)) {
@@ -1083,7 +1096,7 @@ class AgentViewModel(application: Application) :
         missions.tryEmit(missionList)
         livingAllies.tryEmit(allyShipList)
         enemyStations.tryEmit(enemyStationList)
-        displayedEnemies.tryEmit(enemyShipList)
+        displayedEnemies.tryEmit(scannedEnemies)
         enemyCategories.tryEmit(enemyNavOptions)
         biomechs.tryEmit(biomechList)
 
@@ -1091,7 +1104,7 @@ class AgentViewModel(application: Application) :
         enemyIntel.value = selectedEnemyEntry?.intel
         selectedEnemyIndex.tryEmit(
             selectedEnemyEntry?.let { entry ->
-                enemyShipList.indexOfFirst { it.enemy == entry.enemy }
+                scannedEnemies.indexOfFirst { it.enemy == entry.enemy }
             } ?: -1
         )
 
@@ -1636,7 +1649,9 @@ class AgentViewModel(application: Application) :
             R.plurals.enemy_stations,
             R.plurals.allies,
             R.plurals.side_missions,
-            R.plurals.biomechs
+            R.plurals.biomechs,
+            R.plurals.enemies,
+            R.plurals.surrenders,
         )
 
         private val ALL_THEMES = arrayOf(

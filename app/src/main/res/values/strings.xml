@@ -81,10 +81,12 @@
     <string name="channel_allies_deep_string">Deep Strike production</string>
     <string name="channel_biomech_moving">Reanimation alert</string>
     <string name="channel_connection">Connection</string>
+    <string name="channel_enemies_perfidy">Perfidy alert</string>
     <string name="channel_game_info">Game info</string>
     <string name="channel_game_over">Game over</string>
     <string name="channel_group_allies">Allies</string>
     <string name="channel_group_biomechs">Biomechs</string>
+    <string name="channel_group_enemies">Enemies</string>
     <string name="channel_group_important">Important</string>
     <string name="channel_group_missions">Missions</string>
     <string name="channel_group_stations">Stations</string>
@@ -137,6 +139,9 @@
     <string name="docked">Docked</string>
     <string name="docking">Docking</string>
     <string name="enemy">Enemy</string>
+    <string name="enemy_perfidy_notification">
+        This enemy has committed perfidy. Eliminate on sight.
+    </string>
     <string name="enemy_status_brave">Brave</string>
     <string name="enemy_status_cowardly">Cowardly</string>
     <string name="enemy_status_duplicitous">Duplicitous</string>
@@ -269,7 +274,8 @@
             \u2022 Cowardly: More likely to surrender.\n
         </item>
         <item>
-            \u2022 Duplicitous: Surrenders are not permanent.\n
+            \u2022 Duplicitous: Surrenders are perfidious, meaning that the enemy may reengage. See
+            Notifications for more info.\n
         </item>
         <item>
             \u2022 Easily offended: Taunts will work more than once, possibly including ones that
@@ -400,6 +406,10 @@
         <item>
             \u2022 New mission: Sent when a new side mission is issued. Reports the details of the
             mission.\n
+        </item>
+        <item>
+            \u2022 Perfidy alert: Sent when a duplicitous enemy ship that surrendered previously is
+            revealed to have resumed aggression.\n
         </item>
         <item>
             \u2022 Reanimation alert: Sent when a frozen BioMech reanimates. Includes an option to

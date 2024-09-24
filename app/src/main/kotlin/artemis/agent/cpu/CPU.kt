@@ -320,7 +320,8 @@ class CPU(private val viewModel: AgentViewModel) : CoroutineScope {
 
         if (isSurrendered && viewModel.selectedEnemy.value?.enemy == enemy) {
             viewModel.selectedEnemy.value = null
-        } else if (!isSurrendered && wasSurrendered) {
+        } else if (update.isSurrendered.hasValue && !isSurrendered && wasSurrendered) {
+            viewModel.perfidiousEnemy.tryEmit(entry)
             viewModel.enemiesUpdate = true
         }
 
@@ -378,8 +379,11 @@ class CPU(private val viewModel: AgentViewModel) : CoroutineScope {
                 return@apply
             }
 
-            enemies.remove(id)?.also { enemy ->
-                val name = enemy.enemy.name.value
+            enemies.remove(id)?.also { entry ->
+                val enemy = entry.enemy
+                destroyedEnemyName.tryEmit(getFullNameForShip(enemy))
+
+                val name = enemy.name.value
                 allyShips.values.filter {
                     it.isAttacking && it.destination == name
                 }.forEach {
@@ -388,8 +392,8 @@ class CPU(private val viewModel: AgentViewModel) : CoroutineScope {
                 }
                 name?.also(enemyNameIndex::remove)
 
-                if (viewModel.selectedEnemy.value == enemy) {
-                    viewModel.selectedEnemy.value = null
+                if (selectedEnemy.value == entry) {
+                    selectedEnemy.value = null
                 }
 
                 return@apply
